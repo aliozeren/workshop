@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="http://www.activiti.org/processdef">
+  <process id="formPropTest" name="Form Property Test" isExecutable="true">
+    <startEvent id="sid-8FDBD4E5-B029-4268-987C-B0412750F459">
+      <extensionElements>
+        <activiti:formProperty id="testFormProp" name="Test Form Property" type="tuikTestFormType">
+          <activiti:value id="width" name="100px"></activiti:value>
+          <activiti:value id="height" name="40px"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="longProp" name="Long Property" type="long" required="true"></activiti:formProperty>
+        <activiti:formProperty id="stringProp" name="String Property" type="string"></activiti:formProperty>
+        <activiti:formProperty id="enumProp" name="Enum Property" type="enum">
+          <activiti:value id="1" name="Value 1"></activiti:value>
+          <activiti:value id="2" name="Value 2"></activiti:value>
+        </activiti:formProperty>
+      </extensionElements>
+    </startEvent>
+    <userTask id="sid-B22CC95C-10EC-49B7-A4C5-00DE75B5CFC2">
+      <extensionElements>
+        <activiti:formProperty id="boolProp" name="Boolean Property" type="boolean"></activiti:formProperty>
+      </extensionElements>
+    </userTask>
+    <sequenceFlow id="sid-BBD84DFF-C324-4705-B530-FDE919F25692" sourceRef="sid-8FDBD4E5-B029-4268-987C-B0412750F459" targetRef="sid-B22CC95C-10EC-49B7-A4C5-00DE75B5CFC2"></sequenceFlow>
+    <endEvent id="sid-03D3FCD4-8515-40BF-BA5B-67B0C16A9BFB"></endEvent>
+    <sequenceFlow id="sid-A19A221E-F30B-4FCA-B0A2-00526FFFB424" sourceRef="sid-B22CC95C-10EC-49B7-A4C5-00DE75B5CFC2" targetRef="sid-03D3FCD4-8515-40BF-BA5B-67B0C16A9BFB"></sequenceFlow>
+  </process>
+  <bpmndi:BPMNDiagram id="BPMNDiagram_formPropTest">
+    <bpmndi:BPMNPlane bpmnElement="formPropTest" id="BPMNPlane_formPropTest">
+      <bpmndi:BPMNShape bpmnElement="sid-8FDBD4E5-B029-4268-987C-B0412750F459" id="BPMNShape_sid-8FDBD4E5-B029-4268-987C-B0412750F459">
+        <omgdc:Bounds height="30.0" width="30.0" x="69.5" y="219.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="sid-B22CC95C-10EC-49B7-A4C5-00DE75B5CFC2" id="BPMNShape_sid-B22CC95C-10EC-49B7-A4C5-00DE75B5CFC2">
+        <omgdc:Bounds height="80.0" width="100.0" x="195.0" y="194.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="sid-03D3FCD4-8515-40BF-BA5B-67B0C16A9BFB" id="BPMNShape_sid-03D3FCD4-8515-40BF-BA5B-67B0C16A9BFB">
+        <omgdc:Bounds height="28.0" width="28.0" x="340.0" y="220.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge bpmnElement="sid-A19A221E-F30B-4FCA-B0A2-00526FFFB424" id="BPMNEdge_sid-A19A221E-F30B-4FCA-B0A2-00526FFFB424">
+        <omgdi:waypoint x="295.0" y="234.0"></omgdi:waypoint>
+        <omgdi:waypoint x="340.0" y="234.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="sid-BBD84DFF-C324-4705-B530-FDE919F25692" id="BPMNEdge_sid-BBD84DFF-C324-4705-B530-FDE919F25692">
+        <omgdi:waypoint x="99.5" y="234.0"></omgdi:waypoint>
+        <omgdi:waypoint x="195.0" y="234.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</definitions>

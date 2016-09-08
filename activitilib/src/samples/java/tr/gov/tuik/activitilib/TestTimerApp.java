@@ -8,8 +8,6 @@ import org.activiti.engine.ProcessEngine;
 import org.activiti.engine.task.Task;
 import org.apache.log4j.Logger;
 
-import tr.gov.tuik.activitilib.TUIKProcessEngine;
-
 public class TestTimerApp 
 {
 	private final static Logger logger = Logger.getLogger(TestTimerApp.class);

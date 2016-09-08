@@ -14,6 +14,7 @@ import org.activiti.engine.history.HistoricIdentityLink;
 import org.activiti.engine.history.HistoricProcessInstance;
 import org.activiti.engine.history.HistoricProcessInstanceQuery;
 import org.activiti.engine.history.HistoricTaskInstance;
+import org.activiti.engine.repository.Deployment;
 import org.activiti.engine.runtime.ProcessInstance;
 import org.activiti.engine.runtime.ProcessInstanceQuery;
 import org.activiti.engine.task.Task;
@@ -41,6 +42,8 @@ public class TUIKProcessEngine
 			pec = ProcessEngineConfiguration.createProcessEngineConfigurationFromResourceDefault();
 			pec.setDatabaseSchemaUpdate("none");
 			processEngine = pec.buildProcessEngine();
+			logger.debug("TUIKProcessEngine instance is created...");
+
 		}
 		return instance;
 	}
@@ -59,6 +62,23 @@ public class TUIKProcessEngine
 		return TUIKProcessEngine.processEngine;
 	}
 	
+	public void deployModel(String name, String resourcePath)
+	{
+		
+			Deployment x = getProcessEngine().getRepositoryService()
+					.createDeployment()
+					.name(name)
+					.addClasspathResource(resourcePath)
+					.deploy();
+			
+			if (x != null) {
+				logger.debug(x.getName() + " model has been deployed");
+			} else {
+				logger.error("Unable to deploy resource with path " + resourcePath);
+			}
+		
+	}
+
 	public ProcessInstance startProcessInstance(String processKey)
 	{
 		return this.startProcessInstance(processKey, null);
@@ -70,6 +90,15 @@ public class TUIKProcessEngine
 			return getProcessEngine().getRuntimeService().startProcessInstanceByKey(processKey, variables);
 		} else {
 			return getProcessEngine().getRuntimeService().startProcessInstanceByKey(processKey);
+		}
+	}
+
+	public ProcessInstance startProcessInstanceByMessage(String message, Map<String, Object> variables) 
+	{
+		if (variables != null) {
+			return getProcessEngine().getRuntimeService().startProcessInstanceByMessage(message, variables);
+		} else {
+			return getProcessEngine().getRuntimeService().startProcessInstanceByMessage(message);
 		}
 	}
 

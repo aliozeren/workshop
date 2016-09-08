@@ -4,7 +4,6 @@ import java.util.List;
 
 import org.activiti.engine.ProcessEngine;
 import org.activiti.engine.runtime.Execution;
-import org.activiti.engine.runtime.ProcessInstance;
 import org.apache.log4j.Logger;
 
 public class StartProcessApp 
