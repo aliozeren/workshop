@@ -46,12 +46,28 @@ private final static Logger logger = Logger.getLogger(TUIKFormService.class);
 				.createProcessDefinitionQuery()
 				.processDefinitionKey(processDefinitionKey)
 				.orderByDeploymentId()
-				.asc()
-				.singleResult();
+				.desc()
+				.list()
+				.get(0);
 		
 		return getFormService().getStartFormData(definition.getId());
 	}
 
+	public Object getRenderedStartForm(String processDefinitionKey)
+	{
+		ProcessDefinition definition = TUIKProcessEngine.getInstance().getProcessEngine().getRepositoryService()
+				.createProcessDefinitionQuery()
+				.processDefinitionKey(processDefinitionKey)
+				.orderByDeploymentId()
+				.desc()
+				.list()
+				.get(0);
+
+		
+		return getFormService().getRenderedStartForm(definition.getId());
+		
+	}
+	
 	public Object getRenderedTaskForm(String taskId)
 	{
 		return getFormService().getRenderedTaskForm(taskId);
