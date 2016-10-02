@@ -1,21 +1,18 @@
 package tr.gov.tuik.activitilib.zk;
 
-
 import org.activiti.engine.form.FormProperty;
 import org.zkoss.zk.ui.HtmlBasedComponent;
-import org.zkoss.zul.Datebox;
+import org.zkoss.zul.Checkbox;
 
-import tr.gov.tuik.activitilib.types.AbstractDateFormType;
+import tr.gov.tuik.activitilib.types.AbstractCheckBoxFormType;
 
-public class ZKDateFormType extends AbstractDateFormType 
+public class ZKCheckboxFormType extends AbstractCheckBoxFormType
 {
-	private static final long serialVersionUID = 3868249214623992114L;
+	private static final long serialVersionUID = 3868249214623992954L;
 
 	public HtmlBasedComponent renderInput(FormProperty property) 
 	{
-		Datebox component = new Datebox();
+		Checkbox component = new Checkbox();
 		return ZKInputUtils.getInstance().createHtmlBasedComponent(component, this);
 	}
-
-
 }

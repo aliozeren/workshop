@@ -1,5 +1,10 @@
 package tr.gov.tuik.activitilib.types;
 
+import java.util.HashMap;
+import java.util.Map;
+
+import org.activiti.bpmn.model.FormProperty;
+import org.activiti.bpmn.model.FormValue;
 import org.activiti.engine.form.AbstractFormType;
 
 public abstract class AbstractCommonFormType extends AbstractFormType implements ActivitiFormTypeInterface 
@@ -7,6 +12,19 @@ public abstract class AbstractCommonFormType extends AbstractFormType implements
 	private static final long serialVersionUID = 9174362796522080281L;
 	
 	private String variable;
+	
+	private String label;
+	private String height;
+	private String width;
+	private String styleClass;
+	private String onClick;
+	private String onCreate;
+	private String onDoubleClick;
+	private String onMouseOver;
+	private String onFocus;
+	private String onBlur;
+	private String onRightClick;
+	
 
 	public void setVariable(String variable) 
 	{
@@ -35,4 +53,73 @@ public abstract class AbstractCommonFormType extends AbstractFormType implements
 		return "plain/text";
 	}
 
+	public AbstractFormType parseInput(FormProperty property) 
+	{
+		Map<String,String> map = new HashMap<String,String>();
+		for (FormValue fv : property.getFormValues()) {
+			map.put(fv.getId(), fv.getName());
+		}
+		
+		this.label= property.getName();
+		
+		this.height= map.get("height");
+		this.width= map.get("width");
+		this.styleClass= map.get("styleClass");
+		this.onClick= map.get("onClick");
+		this.onCreate= map.get("onCreate");
+		this.onDoubleClick= map.get("onDoubleClick");
+		this.onMouseOver= map.get("onMouseOver");
+		this.onDoubleClick= map.get("onDoubleClick");
+		this.onMouseOver= map.get("onMouseOver");
+		this.onFocus= map.get("onFocus");
+		this.onBlur= map.get("onBlur");
+		this.onRightClick= map.get("onRightClick");
+
+		return this;
+	}
+
+	public String getHeight() {
+		return height;
+	}
+
+	public String getWidth() {
+		return width;
+	}
+
+	public String getOnClick() {
+		return onClick;
+	}
+
+	public String getOnCreate() {
+		return onCreate;
+	}
+
+	public String getOnDoubleClick() {
+		return onDoubleClick;
+	}
+
+	public String getOnMouseOver() {
+		return onMouseOver;
+	}
+
+	public String getOnFocus() {
+		return onFocus;
+	}
+
+	public String getOnBlur() {
+		return onBlur;
+	}
+
+	public String getOnRightClick() {
+		return onRightClick;
+	}
+
+	public String getStyleClass() {
+		return styleClass;
+	}
+
+	public String getLabel() {
+		return label;
+	}
+	
 }
