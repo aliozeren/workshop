@@ -3,6 +3,8 @@ package tr.gov.tuik.activitilib;
 import org.activiti.engine.form.FormProperty;
 import org.activiti.engine.form.StartFormData;
 import org.apache.log4j.Logger;
+import org.zkoss.zk.ui.HtmlBasedComponent;
+import org.zkoss.zul.impl.XulElement;
 
 import tr.gov.tuik.activitilib.types.ActivitiFormTypeInterface;
 
@@ -20,29 +22,14 @@ public class GetStartFormDataApp
 			String propertyId = property.getId();
 			String propertyValue = property.getValue();
 			logger.info("Populating form field " + propertyId + " with value " + propertyValue);
-			logger.info("Property Type : " + property.getType());
-			logger.info("Class Type : " + property.getClass());
+//			logger.info("Property Type : " + property.getType());
+//			logger.info("Class Type : " + property.getClass());
 			if (property.getType() instanceof ActivitiFormTypeInterface) {
 				ActivitiFormTypeInterface prop= (ActivitiFormTypeInterface) property.getType();
-				
 				logger.info("Variable : " + prop.getVariable());
-				logger.info(prop.renderInput(property));
+				Object ele= prop.renderInput(property);
+				logger.info(ele.toString());
 			}
-//			if (property.getType() instanceof TUIKTestFormType) {
-//				TUIKTestFormType t = (TUIKTestFormType) property.getType();
-//				logger.info(" --> Width " + t.getWidth());
-//				logger.info(" --> Height " + t.getHeight());
-//			}
-//			
-//			if (property.getType() instanceof EnumFormType) {
-//				EnumFormType e = (EnumFormType) property.getType();
-//				Map values = (LinkedHashMap) e.getInformation("values");
-//				for ( Object key : values.keySet())
-//				{
-//					logger.info(key + " -- " + values.get(key) );
-//				}
-//			}
-			
 			
 		}
     	

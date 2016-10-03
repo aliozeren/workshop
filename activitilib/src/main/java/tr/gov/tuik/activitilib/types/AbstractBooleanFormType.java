@@ -11,6 +11,7 @@ public abstract class AbstractBooleanFormType extends AbstractCommonFormType
 	
 	public AbstractFormType parseInput(FormProperty property)
 	{
+		super.parseInput(property);
 		return this;
 	}
 

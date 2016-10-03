@@ -12,6 +12,8 @@ public abstract class AbstractLongFormType extends AbstractCommonFormType
 
 	public AbstractFormType parseInput(FormProperty property)
 	{
+		super.parseInput(property);
+		
 		return this;
 	}
 

@@ -1,10 +1,6 @@
 package tr.gov.tuik.activitilib.types;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import org.activiti.bpmn.model.FormProperty;
-import org.activiti.bpmn.model.FormValue;
 import org.activiti.engine.form.AbstractFormType;
 
 
@@ -15,11 +11,7 @@ public abstract class AbstractCheckBoxFormType extends AbstractCommonFormType
 	
 	public AbstractFormType parseInput(FormProperty property)
 	{
-		Map<String,String> map = new HashMap<String,String>();
-		for (FormValue fv : property.getFormValues()) {
-			map.put(fv.getId(), fv.getName());
-		}
-		
+		super.parseInput(property);		
 		return this;
 	}
 

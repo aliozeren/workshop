@@ -10,9 +10,7 @@ public class TestRedmineApp
 
     public static void main( String[] args ) throws InterruptedException
     {
-    
     	Issue x = TUIKRedmineUtils.getInstance().getIssueById(861);
     	logger.info(x.getSubject());
-    	logger.info("issue created");
     }
 }

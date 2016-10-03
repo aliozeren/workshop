@@ -2,6 +2,8 @@ package tr.gov.tuik.activitilib.zk;
 
 import org.apache.log4j.Logger;
 import org.zkoss.zk.ui.HtmlBasedComponent;
+import org.zkoss.zul.Div;
+import org.zkoss.zul.Label;
 
 import tr.gov.tuik.activitilib.types.AbstractCommonFormType;
 
@@ -25,11 +27,23 @@ public class ZKInputUtils
 	}
 	
 	
+	public Div getInputDiv(AbstractCommonFormType input)
+	{
+		Div div= new Div();
+		
+		Label label= new Label(input.getLabel());
+		
+		div.appendChild(label);
+		
+		return div;
+	}
+	
 	public HtmlBasedComponent createHtmlBasedComponent(HtmlBasedComponent component, AbstractCommonFormType formType)
 	{
 		
 		assert ( component != null && formType != null);
 
+		
 		component.setHeight(formType.getHeight());
 		component.setWidth(formType.getWidth());
 		component.setClass(formType.getStyleClass());

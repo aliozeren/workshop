@@ -14,7 +14,9 @@ public abstract class AbstractDateFormType extends AbstractCommonFormType
 	
 	public AbstractFormType parseInput(FormProperty property)
 	{
+		super.parseInput(property);
 		this.datePattern= property.getDatePattern();
+		
 		return this;
 	}
 

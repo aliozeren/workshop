@@ -21,7 +21,7 @@ public class CustomFormTypes extends FormTypes
 			formObject.setVariable(formProperty.getVariable());
 			return formObject.parseInput(formProperty);
 		} else {
-			return super.parseFormPropertyType(formProperty);
+			throw new TUIKFormTypeException("No form type is implemented for " + formProperty.getType()); 
 		}
 	}
 

@@ -21,6 +21,8 @@ public abstract class AbstractEnumFormType extends AbstractCommonFormType
 			values.put(fv.getId(), fv.getName());
 		}
 
+		super.parseInput(property);
+		
 		return this;
 	}
 
