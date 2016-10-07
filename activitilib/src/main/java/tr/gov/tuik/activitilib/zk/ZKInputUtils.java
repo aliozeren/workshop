@@ -31,10 +31,11 @@ public class ZKInputUtils
 	{
 		Div div= new Div();
 		
+		div.setId("div_" + input.getId());
 		Label label= new Label(input.getLabel());
-		
+		label.setId("label_" + input.getId());
 		div.appendChild(label);
-		
+	
 		return div;
 	}
 	
@@ -44,6 +45,7 @@ public class ZKInputUtils
 		assert ( component != null && formType != null);
 
 		
+		component.setId(formType.getId());
 		component.setHeight(formType.getHeight());
 		component.setWidth(formType.getWidth());
 		component.setClass(formType.getStyleClass());

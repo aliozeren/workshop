@@ -13,6 +13,7 @@ public abstract class AbstractCommonFormType extends AbstractFormType implements
 	
 	private String variable;
 	
+	private String id;	
 	private String label;
 	private String height;
 	private String width;
@@ -60,6 +61,7 @@ public abstract class AbstractCommonFormType extends AbstractFormType implements
 			map.put(fv.getId(), fv.getName());
 		}
 		
+		this.id= property.getId();
 		this.label= property.getName();
 		
 		this.height= map.get("height");
@@ -120,6 +122,10 @@ public abstract class AbstractCommonFormType extends AbstractFormType implements
 
 	public String getLabel() {
 		return label;
+	}
+
+	public String getId() {
+		return id;
 	}
 	
 }

@@ -64,19 +64,18 @@ public class TUIKProcessEngine
 	
 	public void deployModel(String name, String resourcePath)
 	{
-		
 			Deployment x = getProcessEngine().getRepositoryService()
 					.createDeployment()
 					.name(name)
 					.addClasspathResource(resourcePath)
 					.deploy();
 			
+			
 			if (x != null) {
-				logger.debug(x.getName() + " model has been deployed");
+				logger.info(x.getName() + " model has been deployed");
 			} else {
 				logger.error("Unable to deploy resource with path " + resourcePath);
 			}
-		
 	}
 
 	public ProcessInstance startProcessInstance(String processKey)
