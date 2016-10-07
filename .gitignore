@@ -1,2 +1,8 @@
-/*
-!/activitilib
+.idea/
+*.iml
+.svn/
+.settings/
+.classpath*
+.project
+target/
+bower_components/
