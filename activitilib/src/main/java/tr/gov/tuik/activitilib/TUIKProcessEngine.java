@@ -430,16 +430,24 @@ public class TUIKProcessEngine
 	public List<Task> getUserTasks(String username) 
 	{
 		TaskQuery taskQuery = TUIKProcessEngine.getInstance().getProcessEngine().getTaskService().createTaskQuery();
-		taskQuery.taskCandidateOrAssigned(username);
+		taskQuery.taskAssignee(username);
 		taskQuery.includeTaskLocalVariables();
 		return taskQuery.list();
 	}
 	
-	public List<Task> getGroupTasks(String roleName) 
+	public List<Task> getUserCandidateTasks(String username) 
 	{
-		if (roleName != null) {
+		TaskQuery taskQuery = TUIKProcessEngine.getInstance().getProcessEngine().getTaskService().createTaskQuery();
+		taskQuery.taskCandidateUser(username);
+		taskQuery.includeTaskLocalVariables();
+		return taskQuery.list();
+	}
+
+	public List<Task> getGroupTasks(String groupName) 
+	{
+		if (groupName != null) {
 			TaskQuery taskQuery = TUIKProcessEngine.getInstance().getProcessEngine().getTaskService().createTaskQuery();
-			taskQuery.taskCandidateGroup(roleName);
+			taskQuery.taskCandidateGroup(groupName);
 			taskQuery.includeTaskLocalVariables();
 			return taskQuery.list();
 		}
