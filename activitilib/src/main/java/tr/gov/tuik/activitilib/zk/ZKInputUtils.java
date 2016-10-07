@@ -1,8 +1,8 @@
 package tr.gov.tuik.activitilib.zk;
 
 import org.apache.log4j.Logger;
+import org.zkoss.zk.ui.Component;
 import org.zkoss.zk.ui.HtmlBasedComponent;
-import org.zkoss.zul.Div;
 import org.zkoss.zul.Label;
 
 import tr.gov.tuik.activitilib.types.AbstractCommonFormType;
@@ -27,16 +27,11 @@ public class ZKInputUtils
 	}
 	
 	
-	public Div getInputDiv(AbstractCommonFormType input)
-	{
-		Div div= new Div();
-		
-		div.setId("div_" + input.getId());
-		Label label= new Label(input.getLabel());
+	public DynamicModel getDynamicModel(AbstractCommonFormType input,  Component component )
+	{	
+		Label label= new Label(input.getLabel()); 
 		label.setId("label_" + input.getId());
-		div.appendChild(label);
-	
-		return div;
+		return  new DynamicModel(label, component);
 	}
 	
 	public HtmlBasedComponent createHtmlBasedComponent(HtmlBasedComponent component, AbstractCommonFormType formType)
