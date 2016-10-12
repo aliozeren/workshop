@@ -18,9 +18,6 @@ public class ListTaskApp
     	TaskService taskService = TUIKProcessEngine.getInstance().getProcessEngine().getTaskService();
     	for (Task t : tasks) {
     		logger.info("Task ID:" + t.getId() + ", Task Name:" + t.getName());
-//    		taskService.setAssignee(t.getId(), "gonzo");
-//    		taskService.claim(t.getId(), "kermit");
-//    		taskService.complete(t.getId());
     	}
     	
     	TUIKProcessEngine.destroy();

@@ -6,5 +6,7 @@
 .project
 target/
 bower_components/
-+/*
- +!/activitilib
+.metadata
+ActivitiProject/
+Servers/
+Test/

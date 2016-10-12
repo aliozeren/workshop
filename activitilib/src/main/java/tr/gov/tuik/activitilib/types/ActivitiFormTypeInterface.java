@@ -8,4 +8,6 @@ public interface ActivitiFormTypeInterface
 	public Object renderInput(org.activiti.engine.form.FormProperty property);
 	public void setVariable(String variable);
 	public String getVariable();
+	public String getValue();
+	
 }

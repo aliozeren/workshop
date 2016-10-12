@@ -13,6 +13,7 @@ public abstract class AbstractCommonFormType extends AbstractFormType implements
 	
 	private String variable;
 	
+	private String value;
 	private String id;	
 	private String label;
 	private String height;
@@ -25,8 +26,10 @@ public abstract class AbstractCommonFormType extends AbstractFormType implements
 	private String onFocus;
 	private String onBlur;
 	private String onRightClick;
+	private boolean required;
+	private boolean writeable;
+	private boolean readable;
 	
-
 	public void setVariable(String variable) 
 	{
 		this.variable= variable;
@@ -76,6 +79,9 @@ public abstract class AbstractCommonFormType extends AbstractFormType implements
 		this.onFocus= map.get("onFocus");
 		this.onBlur= map.get("onBlur");
 		this.onRightClick= map.get("onRightClick");
+		this.readable = property.isReadable();
+		this.writeable = property.isWriteable();
+		this.required = property.isRequired();
 
 		return this;
 	}
@@ -126,6 +132,26 @@ public abstract class AbstractCommonFormType extends AbstractFormType implements
 
 	public String getId() {
 		return id;
+	}
+
+	public boolean isRequired() {
+		return required;
+	}
+
+	public boolean isWriteable() {
+		return writeable;
+	}
+
+	public boolean isReadable() {
+		return readable;
+	}
+
+	public static long getSerialversionuid() {
+		return serialVersionUID;
+	}
+
+	public String getValue() {
+		return value;
 	}
 	
 }

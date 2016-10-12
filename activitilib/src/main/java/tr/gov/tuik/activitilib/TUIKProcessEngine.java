@@ -15,6 +15,7 @@ import org.activiti.engine.history.HistoricProcessInstance;
 import org.activiti.engine.history.HistoricProcessInstanceQuery;
 import org.activiti.engine.history.HistoricTaskInstance;
 import org.activiti.engine.repository.Deployment;
+import org.activiti.engine.repository.ProcessDefinition;
 import org.activiti.engine.runtime.ProcessInstance;
 import org.activiti.engine.runtime.ProcessInstanceQuery;
 import org.activiti.engine.task.Task;
@@ -37,6 +38,7 @@ public class TUIKProcessEngine
 	public static TUIKProcessEngine getInstance() 
 	{
 		if (instance == null) {
+			
 			instance= new TUIKProcessEngine();
 			ProcessEngines.init();
 			pec = ProcessEngineConfiguration.createProcessEngineConfigurationFromResourceDefault();
@@ -62,27 +64,44 @@ public class TUIKProcessEngine
 		return TUIKProcessEngine.processEngine;
 	}
 	
-	public void deployModel(String name, String resourcePath)
+	/**
+	 * @param name
+	 * @param resourcePath
+	 */
+	public ProcessDefinition deployModel(String name, String resourcePath)
 	{
-			Deployment x = getProcessEngine().getRepositoryService()
+			Deployment deployment = getProcessEngine().getRepositoryService()
 					.createDeployment()
 					.name(name)
 					.addClasspathResource(resourcePath)
 					.deploy();
 			
-			
-			if (x != null) {
-				logger.info(x.getName() + " model has been deployed");
+			if (deployment != null) {
+				ProcessDefinition process = getProcessEngine().getRepositoryService().
+						createProcessDefinitionQuery().deploymentId(deployment.getId()).list().get(0);
+						
+				logger.info(deployment.getName() + " model has been deployed with the key" + process.getKey());
+				return process;
 			} else {
 				logger.error("Unable to deploy resource with path " + resourcePath);
+				throw new TUIKProcessEngineException("Unable to deploy resource with path " + resourcePath);
 			}
 	}
 
+	/**
+	 * @param processKey
+	 * @return
+	 */
 	public ProcessInstance startProcessInstance(String processKey)
 	{
 		return this.startProcessInstance(processKey, null);
 	}
 
+	/**
+	 * @param processKey
+	 * @param variables
+	 * @return
+	 */
 	public ProcessInstance startProcessInstance(String processKey, Map<String, Object> variables) 
 	{
 		if (variables != null) {
@@ -92,10 +111,15 @@ public class TUIKProcessEngine
 		}
 	}
 
+	/**
+	 * @param message
+	 * @param variables
+	 * @return
+	 */
 	public ProcessInstance startProcessInstanceByMessage(String message, Map<String, Object> variables) 
 	{
 		if (variables != null) {
-			return getProcessEngine().getRuntimeService().startProcessInstanceByMessage(message, variables);
+			return getProcessEngine().getRuntimeService(). startProcessInstanceByMessage(message, variables);
 		} else {
 			return getProcessEngine().getRuntimeService().startProcessInstanceByMessage(message);
 		}
