@@ -13,7 +13,7 @@ public class GetStartFormDataApp
 
     public static void main( String[] args ) throws IOException
     {
-
+    	
 		for (Object property : TUIKFormService.getInstance().getRenderedStartForm("formPropTest")) {
 			DynamicModel dm = (DynamicModel) property;
 			logger.info("Populating form field " + dm.getLabel().getId() );
