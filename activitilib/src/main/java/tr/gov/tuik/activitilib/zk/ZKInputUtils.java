@@ -4,12 +4,14 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.activiti.engine.FormService;
 import org.apache.log4j.Logger;
 import org.zkoss.zk.ui.Component;
-import org.zkoss.zk.ui.HtmlBasedComponent;
 import org.zkoss.zul.Label;
 import org.zkoss.zul.impl.InputElement;
+import org.zkoss.zul.impl.XulElement;
 
+import tr.gov.tuik.activitilib.TUIKFormService;
 import tr.gov.tuik.activitilib.types.AbstractCommonFormType;
 import tr.gov.tuik.activitilib.types.FormToMapConverter;
 
@@ -40,17 +42,24 @@ public class ZKInputUtils implements FormToMapConverter
 		return  new DynamicModel(label, component);
 	}
 
-	public HtmlBasedComponent createHtmlBasedComponent(HtmlBasedComponent component, AbstractCommonFormType formType)
+	public XulElement createHtmlBasedComponent(XulElement component, AbstractCommonFormType formType)
 	{
 
 		assert ( component != null && formType != null);
 
+		if (component instanceof InputElement) {
+			if (formType.isRequired()) {
+				((InputElement) component).setConstraint("no empty");
+			}
+			if (formType.isWriteable()) {
+				((InputElement) component).setReadonly(true);
+			}
+		}
 
-		//		how can we set these properties to a ZK Input
-		//		component.setXYZ(formType.isReadable());
-		//		component.setXYZ(formType.isReadable());
-		//		component.setXYZ(formType.isReadable());
-
+		if (formType.isReadable()) {
+			component.setVisible(false);
+		}
+		
 		component.setId(formType.getId());
 		component.setHeight(formType.getHeight());
 		component.setWidth(formType.getWidth());
@@ -72,7 +81,7 @@ public class ZKInputUtils implements FormToMapConverter
 				map.put(component.getId(), ((InputElement)component).getText());
 			}
 		}
-
+		
 		return map;	
 	}
 

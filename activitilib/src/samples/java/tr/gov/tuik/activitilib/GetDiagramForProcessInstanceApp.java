@@ -15,7 +15,7 @@ public class GetDiagramForProcessInstanceApp
     {
     	
     	FileOutputStream f = new FileOutputStream(new File("/home/alio/test.png"));
-    	TUIKProcessEngine.getInstance().getProcessDiagramForInstance("eventTestProcess", "132501",f);
+    	TUIKProcessEngine.getInstance().getProcessDiagramForInstance("test", "160005",f);
 
     	f.close();
     	
