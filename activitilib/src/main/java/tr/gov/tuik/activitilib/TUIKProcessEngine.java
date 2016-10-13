@@ -101,6 +101,30 @@ public class TUIKProcessEngine
 		}
 	}
 
+
+	/**
+	 * @param name
+	 * @param resourceName
+	 * @param inputStream
+	 */
+	public void deployModel(String name, String resourceName, String inputStream)
+	{
+
+		Deployment x = getProcessEngine().getRepositoryService()
+				.createDeployment()
+				.name(name)
+				.addString(resourceName, inputStream)
+				.deploy();
+
+		if (x != null) {
+			logger.debug(x.getName() + " model has been deployed");
+		} else {
+			logger.error("Unable to deploy resource with path " + resourceName);
+		}
+
+	}	
+	
+	
 	/**
 	 * Starts a process instance with the given process key
 	 * @param processKey

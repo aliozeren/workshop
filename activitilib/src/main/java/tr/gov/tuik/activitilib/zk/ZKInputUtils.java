@@ -4,14 +4,13 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.activiti.engine.FormService;
 import org.apache.log4j.Logger;
 import org.zkoss.zk.ui.Component;
+import org.zkoss.zul.Checkbox;
 import org.zkoss.zul.Label;
 import org.zkoss.zul.impl.InputElement;
 import org.zkoss.zul.impl.XulElement;
 
-import tr.gov.tuik.activitilib.TUIKFormService;
 import tr.gov.tuik.activitilib.types.AbstractCommonFormType;
 import tr.gov.tuik.activitilib.types.FormToMapConverter;
 
@@ -59,7 +58,7 @@ public class ZKInputUtils implements FormToMapConverter
 		if (formType.isReadable()) {
 			component.setVisible(false);
 		}
-		
+
 		component.setId(formType.getId());
 		component.setHeight(formType.getHeight());
 		component.setWidth(formType.getWidth());
@@ -69,20 +68,26 @@ public class ZKInputUtils implements FormToMapConverter
 	}
 
 
+
 	public Map<String, String> formToMap(Object formProperties) 
 	{
 		@SuppressWarnings("unchecked")
 		List<DynamicModel> list = (List<DynamicModel>) formProperties;
-		
+
 		Map<String, String> map = new HashMap<String, String>();
 		for (DynamicModel model : list) {
-			Component component= model.getComponent();
-			if (component != null && component instanceof InputElement ) {
-				map.put(component.getId(), ((InputElement)component).getText());
+			Component component = model.getComponent();
+			if (component != null && component instanceof InputElement) {
+				map.put(component.getId(), ((InputElement) component).getText());
+			} else if (component != null && component instanceof Checkbox) {
+				if (((Checkbox) component).isChecked())
+					map.put(component.getId(), "true");
+				else
+					map.put(component.getId(), "false");
 			}
 		}
-		
-		return map;	
+
+		return map;
 	}
 
 
