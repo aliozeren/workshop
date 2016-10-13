@@ -10,7 +10,7 @@ import org.activiti.engine.form.AbstractFormType;
 public abstract class AbstractEnumFormType extends AbstractCommonFormType
 {
 	private static final long serialVersionUID = 3868249214623992954L;
-	public static final String NAME = "enum";
+	public static final String NAME = "combobox";
 
 	private Map<String,String> values;
 
