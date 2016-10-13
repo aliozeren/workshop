@@ -83,6 +83,15 @@ public class TUIKFormService
 	}
 
 	/**
+	 * @param processDefinitionId
+	 * @return
+	 */
+	public StartFormData getStartFormByProcessId(String processDefinitionId)
+	{
+		return getFormService().getStartFormData(processDefinitionId);
+	}
+
+	/**
 	 * @param processDefinitionKey
 	 * @return
 	 */
@@ -99,6 +108,18 @@ public class TUIKFormService
 		return renderProperties(startForm.getFormProperties());
 		
 	}
+	
+	/**
+	 * @param processDefinitionId
+	 * @return
+	 */
+	public List<?> getRenderedStartFormByProcessId(String processDefinitionId)
+	{
+		StartFormData startForm = getFormService().getStartFormData(processDefinitionId);
+		
+		return renderProperties(startForm.getFormProperties());
+		
+	}	
 
 	/**
 	 * @param processDefinitionKey
@@ -116,6 +137,18 @@ public class TUIKFormService
 		
 		
 		return getFormService().submitStartFormData(definition.getId(), converter.formToMap(properties));
+	}
+	
+	
+	/**
+	 * @param processDefinitionId
+	 * @param converter
+	 * @param properties
+	 * @return
+	 */
+	public ProcessInstance submitStartFormDataByProcessId(String processDefinitionId, FormToMapConverter converter, Object properties)
+	{
+		return getFormService().submitStartFormData(processDefinitionId, converter.formToMap(properties));
 	}
 	
 	

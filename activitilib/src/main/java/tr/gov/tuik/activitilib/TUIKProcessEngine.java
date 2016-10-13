@@ -750,13 +750,11 @@ public class TUIKProcessEngine
 	}
 
 	/**
-	 * Returns the png image of the process diagram with the given process key and draws the active tasks
-	 * in the process with the given process id.
+	 * Returns the png image of the process diagram with the given process key
 	 * @param processDefinitionKey
-	 * @param processId
 	 * @param out
 	 */
-	public void getProcessDiagramForInstance(String processDefinitionKey, String processId, OutputStream out)
+	public InputStream getProcessDiagram(String processDefinitionKey)
 	{
 		ProcessDefinition definition = processEngine.getRepositoryService()
 				.createProcessDefinitionQuery()
@@ -764,9 +762,30 @@ public class TUIKProcessEngine
 				.latestVersion()
 				.singleResult();
 
-		InputStream diagramInputStream = processEngine.getRepositoryService().getProcessDiagram(definition.getId());
+		return processEngine.getRepositoryService().getProcessDiagram(definition.getId());
+	}
 
-		DiagramLayout diagramLayout = processEngine.getRepositoryService().getProcessDiagramLayout(definition.getId());
+	/**
+	 * Returns the png image of the process diagram with the given process definition id
+	 * @param processDefinitionId
+	 * @param out
+	 */
+	public InputStream getProcessDiagramById(String processDefinitionId)
+	{
+		return processEngine.getRepositoryService().getProcessDiagram(processDefinitionId);
+	}	
+	
+	/**
+	 * Returns the png image of the process diagram with the given process id and draws the active tasks
+	 * @param processId
+	 * @param out
+	 */
+	public void getProcessDiagramForInstance(String processId, OutputStream out)
+	{
+
+		ProcessInstance process = processEngine.getRuntimeService().createProcessInstanceQuery().processInstanceId(processId).singleResult();
+		InputStream diagramInputStream = processEngine.getRepositoryService().getProcessDiagram(process.getProcessDefinitionId());
+		DiagramLayout diagramLayout = processEngine.getRepositoryService().getProcessDiagramLayout(process.getProcessDefinitionId());
 
 		try {
 			BufferedImage diagramImage = ImageIO.read(diagramInputStream);
@@ -783,10 +802,11 @@ public class TUIKProcessEngine
 			}
 
 			ImageIO.write(diagramImage, "PNG", out);
+			
 		} catch (IOException e) {
 			e.printStackTrace();
 		}		
 
-	}
+	}	
 
 }

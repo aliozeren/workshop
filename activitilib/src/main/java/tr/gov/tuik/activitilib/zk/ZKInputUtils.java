@@ -7,6 +7,7 @@ import java.util.Map;
 import org.apache.log4j.Logger;
 import org.zkoss.zk.ui.Component;
 import org.zkoss.zul.Checkbox;
+import org.zkoss.zul.Combobox;
 import org.zkoss.zul.Label;
 import org.zkoss.zul.impl.InputElement;
 import org.zkoss.zul.impl.XulElement;
@@ -34,6 +35,11 @@ public class ZKInputUtils implements FormToMapConverter
 	}
 
 
+	/**
+	 * @param input
+	 * @param component
+	 * @return
+	 */
 	public DynamicModel getDynamicModel(AbstractCommonFormType input,  Component component )
 	{	
 		Label label= new Label(input.getLabel()); 
@@ -41,6 +47,11 @@ public class ZKInputUtils implements FormToMapConverter
 		return  new DynamicModel(label, component);
 	}
 
+	/**
+	 * @param component
+	 * @param formType
+	 * @return
+	 */
 	public XulElement createHtmlBasedComponent(XulElement component, AbstractCommonFormType formType)
 	{
 
@@ -50,12 +61,12 @@ public class ZKInputUtils implements FormToMapConverter
 			if (formType.isRequired()) {
 				((InputElement) component).setConstraint("no empty");
 			}
-			if (formType.isWriteable()) {
+			if (!formType.isWriteable()) {
 				((InputElement) component).setReadonly(true);
 			}
 		}
 
-		if (formType.isReadable()) {
+		if (!formType.isReadable()) {
 			component.setVisible(false);
 		}
 
@@ -69,6 +80,9 @@ public class ZKInputUtils implements FormToMapConverter
 
 
 
+	/* (non-Javadoc)
+	 * @see tr.gov.tuik.activitilib.types.FormToMapConverter#formToMap(java.lang.Object)
+	 */
 	public Map<String, String> formToMap(Object formProperties) 
 	{
 		@SuppressWarnings("unchecked")
@@ -77,13 +91,27 @@ public class ZKInputUtils implements FormToMapConverter
 		Map<String, String> map = new HashMap<String, String>();
 		for (DynamicModel model : list) {
 			Component component = model.getComponent();
-			if (component != null && component instanceof InputElement) {
-				map.put(component.getId(), ((InputElement) component).getText());
-			} else if (component != null && component instanceof Checkbox) {
-				if (((Checkbox) component).isChecked())
+			
+			if (component == null) {
+				continue;
+			}
+			
+			
+			
+			if (component instanceof Combobox) {
+				if (((Combobox) component).getSelectedItem() != null) {
+					map.put(component.getId(), ((Combobox) component).getSelectedItem().getValue().toString());
+				}
+			} else if (component instanceof Checkbox) {
+				if (((Checkbox) component).isChecked()) {
 					map.put(component.getId(), "true");
-				else
+				} else {
 					map.put(component.getId(), "false");
+				}
+				
+			} // InputElement condition must be the last condition
+			else if (component instanceof InputElement) { 
+				map.put(component.getId(), ((InputElement) component).getText());
 			}
 		}
 
