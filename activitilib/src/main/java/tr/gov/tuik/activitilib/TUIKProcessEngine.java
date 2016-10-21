@@ -3,6 +3,7 @@ package tr.gov.tuik.activitilib;
 import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Graphics2D;
+import java.awt.Image;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.InputStream;
@@ -150,6 +151,31 @@ public class TUIKProcessEngine
 		}
 	}
 
+	/**
+	 * Starts a process instance with the given process definition Id & the variables
+	 * @param processDefinitionId
+	 * @param variables
+	 * @return
+	 */
+	public ProcessInstance startProcessInstanceById(String processDefinitionId, Map<String, Object> variables) 
+	{
+		if (variables != null) {
+			return getProcessEngine().getRuntimeService().startProcessInstanceById(processDefinitionId, variables);
+		} else {
+			return getProcessEngine().getRuntimeService().startProcessInstanceById(processDefinitionId);
+		}
+	}
+	
+	/**
+	 * Starts a process instance with the given process definition Id
+	 * @param processDefinitionId
+	 * @return
+	 */
+	public ProcessInstance startProcessInstanceById(String processDefinitionId) 
+	{
+		return this.startProcessInstanceById(processDefinitionId, null);
+	}
+	
 	/**
 	 * Starts a process instance which is listening to the given message
 	 * @param message
@@ -746,6 +772,23 @@ public class TUIKProcessEngine
 			ImageIO.write(diagramImage, "PNG", out);
 		} catch (IOException e) {
 			e.printStackTrace();
+			throw new TUIKProcessEngineException("e");
+		}		
+	}
+	
+	/**
+	 * @param processDefinitionKey
+	 * @param out
+	 */
+	public void getProcessDiagramById(String processDefinitionId, OutputStream out)
+	{
+		InputStream diagramInputStream = processEngine.getRepositoryService().getProcessDiagram(processDefinitionId);
+		try {
+			BufferedImage diagramImage = ImageIO.read(diagramInputStream);
+			ImageIO.write(diagramImage, "PNG", out);
+		} catch (IOException e) {
+			e.printStackTrace();
+			throw new TUIKProcessEngineException("e");
 		}		
 	}
 
@@ -805,8 +848,42 @@ public class TUIKProcessEngine
 			
 		} catch (IOException e) {
 			e.printStackTrace();
-		}		
+			throw new TUIKProcessEngineException("e");
+			
+		}	
+	}
+	
+	/**
+	 * Returns the image of the process diagram with the given process id and draws the active tasks
+	 * @param processId
+	 */
+	public Image getProcessDiagramForInstance(String processId)
+	{
 
+		ProcessInstance process = processEngine.getRuntimeService().createProcessInstanceQuery().processInstanceId(processId).singleResult();
+		InputStream diagramInputStream = processEngine.getRepositoryService().getProcessDiagram(process.getProcessDefinitionId());
+		DiagramLayout diagramLayout = processEngine.getRepositoryService().getProcessDiagramLayout(process.getProcessDefinitionId());
+
+		try {
+			BufferedImage diagramImage = ImageIO.read(diagramInputStream);
+			Graphics2D graphics = (Graphics2D) diagramImage.getGraphics();
+
+			List<Execution> executions = processEngine.getRuntimeService().createExecutionQuery().processInstanceId(processId).list();
+			graphics.setColor(Color.red);
+			graphics.setStroke(new BasicStroke(3));
+			for (Execution execution : executions) {
+				DiagramNode node = diagramLayout.getNode(execution.getActivityId());
+				if (node != null) {
+					graphics.drawRoundRect(node.getX().intValue(), node.getY().intValue(), node.getWidth().intValue(), node.getHeight().intValue(), 5, 5);
+				}
+			}
+
+			return diagramImage;
+			
+		} catch (IOException e) {
+			e.printStackTrace();
+			throw new TUIKProcessEngineException("e");
+		}		
 	}	
 
 }
