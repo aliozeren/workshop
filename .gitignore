@@ -3,7 +3,6 @@
 .svn/
 .settings/
 .classpath*
-.project
 target/
 bower_components/
 .metadata
