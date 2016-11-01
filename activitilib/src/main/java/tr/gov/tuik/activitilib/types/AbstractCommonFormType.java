@@ -11,6 +11,8 @@ public abstract class AbstractCommonFormType extends AbstractFormType implements
 {
 	private static final long serialVersionUID = 9174362796522080281L;
 	
+	Map<String,String> map;
+	
 	private String variable;
 	
 	private String value;
@@ -59,7 +61,7 @@ public abstract class AbstractCommonFormType extends AbstractFormType implements
 
 	public AbstractFormType parseInput(FormProperty property) 
 	{
-		Map<String,String> map = new HashMap<String,String>();
+		map = new HashMap<String,String>();
 		for (FormValue fv : property.getFormValues()) {
 			map.put(fv.getId(), fv.getName());
 		}
@@ -152,6 +154,10 @@ public abstract class AbstractCommonFormType extends AbstractFormType implements
 
 	public String getValue() {
 		return value;
+	}
+
+	public Map<String, String> getMap() {
+		return map;
 	}
 	
 }

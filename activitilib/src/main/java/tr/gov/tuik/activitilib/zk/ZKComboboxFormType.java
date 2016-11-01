@@ -4,9 +4,9 @@ import org.activiti.engine.form.FormProperty;
 import org.zkoss.zul.Combobox;
 import org.zkoss.zul.Comboitem;
 
-import tr.gov.tuik.activitilib.types.AbstractEnumFormType;
+import tr.gov.tuik.activitilib.types.AbstractComboboxFormType;
 
-public class ZKEnumFormType extends AbstractEnumFormType  
+public class ZKComboboxFormType extends AbstractComboboxFormType  
 {
 
 	private static final long serialVersionUID = 3868249214623992954L;
@@ -16,9 +16,9 @@ public class ZKEnumFormType extends AbstractEnumFormType
 		Combobox component = new Combobox();
 		component= (Combobox) ZKInputUtils.getInstance().createHtmlBasedComponent(component, this);
 		
-		for ( String key : super.getValues().keySet()) {
+		for ( String key : super.getOptions().keySet()) {
 			Comboitem item = new Comboitem();
-			item.setLabel(super.getValues().get(key));
+			item.setLabel(super.getOptions().get(key));
 			item.setValue(key);
 			component.appendChild(item);
 		}

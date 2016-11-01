@@ -1,53 +1,29 @@
 package tr.gov.tuik.activitilib.types;
 
-import java.util.HashMap;
 import java.util.Map;
 
 import org.activiti.bpmn.model.FormProperty;
-import org.activiti.bpmn.model.FormValue;
 import org.activiti.engine.form.AbstractFormType;
 
-public abstract class AbstractEnumFormType extends AbstractCommonFormType
+import tr.gov.tuik.activitilib.TUIKUtils;
+
+public abstract class AbstractComboboxFormType extends AbstractCommonFormType
 {
 	private static final long serialVersionUID = 3868249214623992954L;
 	public static final String NAME = "combobox";
 
-	private Map<String,String> values;
+	private Map<String,String> options;
 
 	public AbstractFormType parseInput(FormProperty property)
 	{
-		values = new HashMap<String,String>();
-		for (FormValue fv : property.getFormValues()) {
-			values.put(fv.getId(), fv.getName());
-		}
-
 		super.parseInput(property);
-		
+		options= TUIKUtils.getInstance().convertJSONStringToOptions(super.getMap().get("options"));
 		return this;
-	}
-
-	public Map<String, String> getValues() 
-	{
-		return values;
-	}
-
-	public void setValues(Map<String, String> values) 
-	{
-		this.values = values;
 	}
 
 	public String getName() 
 	{
-		return  AbstractEnumFormType.NAME;
-	}
-
-	@Override
-	public Object getInformation(String key) 
-	{
-		if ("values".equals(key)) {
-			return values;
-		}
-		return null;
+		return  AbstractComboboxFormType.NAME;
 	}
 
 	@Override
@@ -70,9 +46,13 @@ public abstract class AbstractEnumFormType extends AbstractCommonFormType
 
 	protected void validateValue(String value) 
 	{
-		if(value != null && values != null && !values.containsKey(value)) {
+		if(super.isRequired() && value != null && options != null && !options.containsKey(value)) {
 				throw new TUIKFormTypeException(value + " is not acceptable for the property...");
 		}
+	}
+
+	public Map<String, String> getOptions() {
+		return options;
 	}
 
 }

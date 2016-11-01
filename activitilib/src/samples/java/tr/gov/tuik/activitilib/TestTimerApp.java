@@ -12,8 +12,9 @@ public class TestTimerApp
 {
 	private final static Logger logger = Logger.getLogger(TestTimerApp.class);
 
-    public static void main( String[] args ) throws InterruptedException
-    {
+	public static void main( String[] args ) throws InterruptedException
+	{
+		
     	ProcessEngine engine = TUIKProcessEngine.getInstance().getProcessEngine();
     	
     	Map<String, Object> vars = new HashMap<String, Object>();
@@ -49,5 +50,5 @@ public class TestTimerApp
     	logger.debug("Second try end");
 
     	TUIKProcessEngine.destroy();
-    }
+	}
 }

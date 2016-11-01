@@ -4,7 +4,7 @@ import org.activiti.bpmn.model.FormProperty;
 import org.activiti.engine.form.AbstractFormType;
 
 
-public abstract class AbstractCheckBoxFormType extends AbstractCommonFormType
+public abstract class AbstractCheckboxFormType extends AbstractCommonFormType
 {
 	private static final long serialVersionUID = 3868249214123992954L;
 	public static final String NAME = "checkbox";
@@ -17,6 +17,6 @@ public abstract class AbstractCheckBoxFormType extends AbstractCommonFormType
 
 	public String getName() 
 	{
-		return AbstractCheckBoxFormType.NAME;
+		return AbstractCheckboxFormType.NAME;
 	}
 }

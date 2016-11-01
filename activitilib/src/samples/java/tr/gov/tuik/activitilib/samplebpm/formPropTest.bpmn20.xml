@@ -7,19 +7,19 @@
           <activiti:value id="width" name="100px"></activiti:value>
           <activiti:value id="height" name="40px"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="stringProp" name="String Property" type="string">
+        <activiti:formProperty id="stringProp" name="String Property" type="textbox">
           <activiti:value id="width" name="100px"></activiti:value>
           <activiti:value id="height" name="40px"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="enumProp" name="Enum Property" type="enum">
-          <activiti:value id="1" name="Value 1"></activiti:value>
+        <activiti:formProperty id="enumProp" name="Enum Property" type="combobox">
+          <activiti:value id="options" name="[['1','Test 1'],['2','Test 2'],['3','Test 3']]"></activiti:value>
           <activiti:value id="2" name="Value 2"></activiti:value>
         </activiti:formProperty>
       </extensionElements>
     </startEvent>
     <userTask id="sid-B22CC95C-10EC-49B7-A4C5-00DE75B5CFC2">
       <extensionElements>
-        <activiti:formProperty id="boolProp" name="Boolean Property" type="boolean"></activiti:formProperty>
+        <activiti:formProperty id="boolProp" name="Boolean Property" type="checkbox"></activiti:formProperty>
       </extensionElements>
     </userTask>
     <sequenceFlow id="sid-BBD84DFF-C324-4705-B530-FDE919F25692" sourceRef="sid-8FDBD4E5-B029-4268-987C-B0412750F459" targetRef="sid-B22CC95C-10EC-49B7-A4C5-00DE75B5CFC2"></sequenceFlow>

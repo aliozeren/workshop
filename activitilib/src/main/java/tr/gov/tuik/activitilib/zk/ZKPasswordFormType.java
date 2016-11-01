@@ -3,9 +3,9 @@ package tr.gov.tuik.activitilib.zk;
 import org.activiti.engine.form.FormProperty;
 import org.zkoss.zul.Checkbox;
 
-import tr.gov.tuik.activitilib.types.AbstractBooleanFormType;
+import tr.gov.tuik.activitilib.types.AbstractPasswordFormType;
 
-public class ZKBooleanFormType extends AbstractBooleanFormType
+public class ZKPasswordFormType extends AbstractPasswordFormType
 {
 	private static final long serialVersionUID = 3868249214623992954L;
 

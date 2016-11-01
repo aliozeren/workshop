@@ -3,9 +3,9 @@ package tr.gov.tuik.activitilib.zk;
 import org.activiti.engine.form.FormProperty;
 import org.zkoss.zul.Textbox;
 
-import tr.gov.tuik.activitilib.types.AbstractStringFormType;
+import tr.gov.tuik.activitilib.types.AbstractTextareaFormType;
 
-public class ZKStringFormType extends AbstractStringFormType  
+public class ZKTextareaFormType extends AbstractTextareaFormType  
 {
 
 	private static final long serialVersionUID = 3868249214623992954L;
@@ -15,6 +15,9 @@ public class ZKStringFormType extends AbstractStringFormType
 	{
 		Textbox component = new Textbox();
 		component= (Textbox) ZKInputUtils.getInstance().createHtmlBasedComponent(component, this);
+		component.setMultiline(true);
+		component.setRows(super.getRows());
+		component.setCols(super.getCols());
 		
 		return  ZKInputUtils.getInstance().getDynamicModel(this, component);
 	}

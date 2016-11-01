@@ -42,9 +42,26 @@ public class ZKInputUtils implements FormToMapConverter
 	 */
 	public DynamicModel getDynamicModel(AbstractCommonFormType input,  Component component )
 	{	
-		Label label= new Label(input.getLabel()); 
-		label.setId("label_" + input.getId());
+		return  this.getDynamicModel(input, component, true);
+	}
+
+	/**
+	 * @param input
+	 * @param component
+	 * @param addLabel - if true add label of the component to the model
+	 * @return
+	 */
+	public DynamicModel getDynamicModel(AbstractCommonFormType input,  Component component, boolean addLabel)
+	{	
+		Label label= null;
+		
+		if (addLabel) {
+			label= new Label(input.getLabel()); 
+			label.setId("label_" + input.getId());
+		}
+		
 		return  new DynamicModel(label, component);
+		
 	}
 
 	/**

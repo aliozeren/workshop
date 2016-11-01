@@ -3,6 +3,9 @@ package tr.gov.tuik.activitilib;
 import java.io.IOException;
 
 import org.apache.log4j.Logger;
+import org.zkoss.zk.ui.Component;
+import org.zkoss.zul.Combobox;
+import org.zkoss.zul.Comboitem;
 
 import tr.gov.tuik.activitilib.zk.DynamicModel;
 
@@ -18,6 +21,13 @@ public class GetStartFormDataApp
 			DynamicModel dm = (DynamicModel) property;
 			logger.info("Populating form field " + dm.getLabel().getId() );
 			logger.info("Variable : " + dm.getComponent().getId());
+			if (dm.getComponent() instanceof Combobox) {
+				Combobox c= (Combobox) dm.getComponent();
+				logger.info("Options : ");
+				for (Component x : c.getChildren()) {
+					logger.info("[" + ((Comboitem)x).getValue() + " , " + ((Comboitem)x).getLabel() + "]");
+				}
+			}
 			logger.info(dm);
 		}
     	
