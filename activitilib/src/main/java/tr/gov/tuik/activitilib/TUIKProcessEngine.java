@@ -3,7 +3,6 @@ package tr.gov.tuik.activitilib;
 import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Graphics2D;
-import java.awt.Image;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.InputStream;
@@ -857,7 +856,7 @@ public class TUIKProcessEngine
 	 * Returns the image of the process diagram with the given process id and draws the active tasks
 	 * @param processId
 	 */
-	public Image getProcessDiagramForInstance(String processId)
+	public BufferedImage getProcessDiagramForInstance(String processId)
 	{
 
 		ProcessInstance process = processEngine.getRuntimeService().createProcessInstanceQuery().processInstanceId(processId).singleResult();
