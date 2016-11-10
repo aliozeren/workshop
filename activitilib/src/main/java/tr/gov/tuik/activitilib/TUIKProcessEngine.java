@@ -8,13 +8,18 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
 import javax.imageio.ImageIO;
 
+import org.activiti.bpmn.model.BpmnModel;
+import org.activiti.bpmn.model.GraphicInfo;
 import org.activiti.engine.HistoryService;
 import org.activiti.engine.ProcessEngine;
 import org.activiti.engine.ProcessEngineConfiguration;
@@ -24,10 +29,7 @@ import org.activiti.engine.history.HistoricProcessInstance;
 import org.activiti.engine.history.HistoricProcessInstanceQuery;
 import org.activiti.engine.history.HistoricTaskInstance;
 import org.activiti.engine.repository.Deployment;
-import org.activiti.engine.repository.DiagramLayout;
-import org.activiti.engine.repository.DiagramNode;
 import org.activiti.engine.repository.ProcessDefinition;
-import org.activiti.engine.runtime.Execution;
 import org.activiti.engine.runtime.ProcessInstance;
 import org.activiti.engine.runtime.ProcessInstanceQuery;
 import org.activiti.engine.task.Task;
@@ -123,8 +125,8 @@ public class TUIKProcessEngine
 		}
 
 	}	
-	
-	
+
+
 	/**
 	 * Starts a process instance with the given process key
 	 * @param processKey
@@ -164,7 +166,7 @@ public class TUIKProcessEngine
 			return getProcessEngine().getRuntimeService().startProcessInstanceById(processDefinitionId);
 		}
 	}
-	
+
 	/**
 	 * Starts a process instance with the given process definition Id
 	 * @param processDefinitionId
@@ -174,7 +176,7 @@ public class TUIKProcessEngine
 	{
 		return this.startProcessInstanceById(processDefinitionId, null);
 	}
-	
+
 	/**
 	 * Starts a process instance which is listening to the given message
 	 * @param message
@@ -560,6 +562,92 @@ public class TUIKProcessEngine
 	}
 
 	/**
+	 * Returns the tasks assigned to a group (role)
+	 * @param groupName - name of the group (role)
+	 * @return
+	 */
+	public List<Task> getGroupTasks(List<String> groups) 
+	{
+		if (groups != null && groups.size() > 0) {
+			TaskQuery taskQuery = processEngine.getTaskService().createTaskQuery();
+			taskQuery.taskCandidateGroupIn(groups);
+			taskQuery.includeTaskLocalVariables();
+			return taskQuery.list();
+		}
+
+		return null;
+	}
+	
+	
+	private List<Task> addToList(List<Task> mainList, List<Task> listToAdd) 
+	{
+		if (mainList == null || mainList.size() == 0 ) {
+			return listToAdd;
+		} else {
+			mainList.addAll(listToAdd);
+		}
+		return mainList;
+	}	
+	
+	/**
+	 * @param username
+	 * @param groups
+	 * @return
+	 */
+	public List<Task> getTasksInvolved(String username, List<String> groups) 
+	{
+		
+		List<Task> tlist = null;
+		
+		tlist = this.addToList(tlist, getUserTasks(username));
+		tlist = this.addToList(tlist, getUserCandidateTasks(username));
+		tlist = this.addToList(tlist, getGroupTasks(groups));
+		
+		if (tlist != null) {
+			Collections.sort(tlist, new Comparator<Task>() {
+				
+				public int compare(Task f1, Task f2) {
+					return f1.getCreateTime().compareTo(f2.getCreateTime());
+				}
+			});		
+		}
+		
+		return tlist; 
+	}
+	
+	/**
+	 * @param username
+	 * @param groups
+	 * @return
+	 */
+	public List<String> getTaskIdsInvolved(String username, List<String> groups) 
+	{
+		
+		List<String> result = null;
+		
+		List<Task> tlist = null;
+		
+		tlist = this.addToList(tlist, getUserTasks(username));
+		tlist = this.addToList(tlist, getUserCandidateTasks(username));
+		tlist = this.addToList(tlist, getGroupTasks(groups));
+		
+		if (tlist != null) {
+			Collections.sort(tlist, new Comparator<Task>() {
+				
+				public int compare(Task f1, Task f2) {
+					return f1.getCreateTime().compareTo(f2.getCreateTime());
+				}
+			});	
+			result= new ArrayList<String>();
+			for (Task t : tlist) {
+				result.add(t.getId());
+			}
+		}
+		
+		return result; 
+	}	
+	
+	/**
 	 * Returns process instance specified by key and variables 
 	 * @param processKey
 	 * @param variables
@@ -704,6 +792,7 @@ public class TUIKProcessEngine
 			if (assignee != null) {
 				taskquery= taskquery.taskAssignee(assignee);
 			}
+
 			if(taskquery.list().size() == 1){
 				return taskquery.active().list().get(0);
 			}
@@ -774,7 +863,7 @@ public class TUIKProcessEngine
 			throw new TUIKProcessEngineException("e");
 		}		
 	}
-	
+
 	/**
 	 * @param processDefinitionKey
 	 * @param out
@@ -816,73 +905,274 @@ public class TUIKProcessEngine
 	{
 		return processEngine.getRepositoryService().getProcessDiagram(processDefinitionId);
 	}	
-	
+
 	/**
-	 * Returns the png image of the process diagram with the given process id and draws the active tasks
+	 * writes PNG image of the process diagram with the given process id in the output stream and draws the active tasks
 	 * @param processId
 	 * @param out
+	 * @param ownedColor - the color of the current user tasks
+	 * @param ownedTaskIdList - the task id list of the user tasks
+	 * @param onlyOwnedTasks - only highlight user tasks if true
 	 */
-	public void getProcessDiagramForInstance(String processId, OutputStream out)
+	public void getProcessDiagramForInstance(String processId, OutputStream out, Color ownedColor, List<String> ownedTaskIdList, boolean onlyOwnedTasks)
 	{
-
 		ProcessInstance process = processEngine.getRuntimeService().createProcessInstanceQuery().processInstanceId(processId).singleResult();
 		InputStream diagramInputStream = processEngine.getRepositoryService().getProcessDiagram(process.getProcessDefinitionId());
-		DiagramLayout diagramLayout = processEngine.getRepositoryService().getProcessDiagramLayout(process.getProcessDefinitionId());
+		BpmnModel model = processEngine.getRepositoryService().getBpmnModel(process.getProcessDefinitionId());
+		List<Task> tasks = processEngine.getTaskService().createTaskQuery().processDefinitionId(process.getProcessDefinitionId()).list();
 
 		try {
-			BufferedImage diagramImage = ImageIO.read(diagramInputStream);
-			Graphics2D graphics = (Graphics2D) diagramImage.getGraphics();
 
-			List<Execution> executions = processEngine.getRuntimeService().createExecutionQuery().processInstanceId(processId).list();
-			graphics.setColor(Color.red);
+			BufferedImage diagramImage = ImageIO.read(diagramInputStream);
+
+			Graphics2D graphics = (Graphics2D) diagramImage.getGraphics();
 			graphics.setStroke(new BasicStroke(3));
-			for (Execution execution : executions) {
-				DiagramNode node = diagramLayout.getNode(execution.getActivityId());
-				if (node != null) {
-					graphics.drawRoundRect(node.getX().intValue(), node.getY().intValue(), node.getWidth().intValue(), node.getHeight().intValue(), 5, 5);
+
+			boolean highlightTask;
+
+			for (Task task : tasks) {
+
+				if (ownedTaskIdList != null && ownedTaskIdList.contains(task.getId())) {
+					highlightTask = true;
+					graphics.setColor(ownedColor == null ? Color.blue : ownedColor);
+				}else if (!onlyOwnedTasks) {
+					highlightTask = true;
+					graphics.setColor(Color.red);
+				} else {
+					highlightTask = false;
+				}
+
+				if (highlightTask) {
+					GraphicInfo x = model.getLocationMap().get(task.getTaskDefinitionKey());
+					if (x != null) {
+						graphics.drawRoundRect((int)x.getX(), (int)x.getY(), (int)x.getWidth(), (int)x.getHeight(), 5, 5);
+					}
+				}
+			}
+
+			ImageIO.write(diagramImage, "PNG", out);
+
+		} catch (IOException e) {
+			e.printStackTrace();
+			throw new TUIKProcessEngineException(e);
+
+		}	
+	}
+
+	/**
+	 * Returns the imagemap of the active tasks and writes the PNG image of the process diagram with the given process id in the output stream and draws the active tasks
+	 * @param processId
+	 * @param out
+	 * @param ownedColor - the color of the current user tasks
+	 * @param ownedTaskIdList - the task id list of the user tasks
+	 * @param onlyOwnedTasks - only highlight user tasks if true
+	 * @return  HashMap 
+	 * 				key  : [String] is the task Id of the active task
+	 * 				value: [String] is the imagemap coordinates of the task
+	 */
+	public Map<String, String> getProcessDiagramForInstanceWithMap(String processId, OutputStream out, Color ownedColor, List<String> ownedTaskIdList, boolean onlyOwnedTasks)
+	{
+		
+		Map<String, String> imagemap = new HashMap<String, String>();
+		
+		ProcessInstance process = processEngine.getRuntimeService().createProcessInstanceQuery().processInstanceId(processId).singleResult();
+		InputStream diagramInputStream = processEngine.getRepositoryService().getProcessDiagram(process.getProcessDefinitionId());
+		BpmnModel model = processEngine.getRepositoryService().getBpmnModel(process.getProcessDefinitionId());
+		List<Task> tasks = processEngine.getTaskService().createTaskQuery().processDefinitionId(process.getProcessDefinitionId()).list();
+
+		try {
+
+			BufferedImage diagramImage = ImageIO.read(diagramInputStream);
+
+			Graphics2D graphics = (Graphics2D) diagramImage.getGraphics();
+			graphics.setStroke(new BasicStroke(3));
+
+			boolean highlightTask;
+
+			for (Task task : tasks) {
+
+				if (ownedTaskIdList != null && ownedTaskIdList.contains(task.getId())) {
+					highlightTask = true;
+					graphics.setColor(ownedColor == null ? Color.blue : ownedColor);
+				}else if (!onlyOwnedTasks) {
+					highlightTask = true;
+					graphics.setColor(Color.red);
+				} else {
+					highlightTask = false;
+				}
+
+				if (highlightTask) {
+					GraphicInfo x = model.getLocationMap().get(task.getTaskDefinitionKey());
+					if (x != null) {
+						graphics.drawRoundRect((int)x.getX(), (int)x.getY(), (int)x.getWidth(), (int)x.getHeight(), 5, 5);
+						imagemap.put(task.getId(), (int)x.getX() + "," + (int)x.getY() + "," + (int)(x.getX() + x.getWidth()) + "," + (int)(x.getY() + x.getHeight()));
+						
+					}
 				}
 			}
 
 			ImageIO.write(diagramImage, "PNG", out);
 			
+			return imagemap;
+
 		} catch (IOException e) {
 			e.printStackTrace();
-			throw new TUIKProcessEngineException("e");
-			
+			throw new TUIKProcessEngineException(e);
+
 		}	
 	}
 	
 	/**
 	 * Returns the image of the process diagram with the given process id and draws the active tasks
 	 * @param processId
+	 * @param color
+	 * @param ownedColor - the color of the current user tasks
+	 * @param ownedTaskIdList - the task id list of the user tasks
+	 * @param onlyOwnedTasks - only highlight user tasks if true 
+	 * @return BufferedImage 
 	 */
-	public BufferedImage getProcessDiagramForInstance(String processId)
+	public BufferedImage getProcessDiagramForInstance(String processId, Color ownedColor, List<String> ownedTaskIdList, boolean onlyOwnedTasks)
 	{
 
 		ProcessInstance process = processEngine.getRuntimeService().createProcessInstanceQuery().processInstanceId(processId).singleResult();
 		InputStream diagramInputStream = processEngine.getRepositoryService().getProcessDiagram(process.getProcessDefinitionId());
-		DiagramLayout diagramLayout = processEngine.getRepositoryService().getProcessDiagramLayout(process.getProcessDefinitionId());
+		BpmnModel model = processEngine.getRepositoryService().getBpmnModel(process.getProcessDefinitionId());
+		List<Task> tasks = processEngine.getTaskService().createTaskQuery().processDefinitionId(process.getProcessDefinitionId()).list();
 
 		try {
 			BufferedImage diagramImage = ImageIO.read(diagramInputStream);
-			Graphics2D graphics = (Graphics2D) diagramImage.getGraphics();
 
-			List<Execution> executions = processEngine.getRuntimeService().createExecutionQuery().processInstanceId(processId).list();
-			graphics.setColor(Color.red);
+			Graphics2D graphics = (Graphics2D) diagramImage.getGraphics();
 			graphics.setStroke(new BasicStroke(3));
-			for (Execution execution : executions) {
-				DiagramNode node = diagramLayout.getNode(execution.getActivityId());
-				if (node != null) {
-					graphics.drawRoundRect(node.getX().intValue(), node.getY().intValue(), node.getWidth().intValue(), node.getHeight().intValue(), 5, 5);
+
+			boolean highlightTask;
+
+			for (Task task : tasks) {
+				if (ownedTaskIdList != null && ownedTaskIdList.contains(task.getId())) {
+					highlightTask = true;
+					graphics.setColor(ownedColor == null ? Color.blue : ownedColor);
+				}else if (!onlyOwnedTasks) {
+					highlightTask = true;
+					graphics.setColor(Color.red);
+				} else {
+					highlightTask = false;
+				}
+
+				if (highlightTask) {
+					GraphicInfo x = model.getLocationMap().get(task.getTaskDefinitionKey());
+					if (x != null) {
+						graphics.drawRoundRect((int)x.getX(), (int)x.getY(), (int)x.getWidth(), (int)x.getHeight(), 5, 5);
+					}
 				}
 			}
 
 			return diagramImage;
-			
+
 		} catch (IOException e) {
 			e.printStackTrace();
-			throw new TUIKProcessEngineException("e");
-		}		
+			throw new TUIKProcessEngineException(e);
+		}	
 	}	
+	
+	/**
+	 * Returns the image and the image map (active tasks) of the process diagram with the given process id and draws the active tasks
+	 * @param processId
+	 * @param color
+	 * @param ownedColor - the color of the current user tasks
+	 * @param ownedTaskIdList - the task id list of the user tasks
+	 * @param onlyOwnedTasks - only highlight user tasks if true 
+	 * @return HashMap
+	 * 	Keys: "image" [class : BufferedImage] is the diagram of the process
+	 * 		  "imagemap" [class : HashMap] ; 
+	 * 				key  : [String] is the task Id of the active task
+	 * 				value: [String] is the imagemap coordinates of the task
+	 */
+	public Map<String, Object> getProcessDiagramForInstanceWithMap(String processId, Color ownedColor, List<String> ownedTaskIdList, boolean onlyOwnedTasks)
+	{
+
+		Map<String, Object> result = new HashMap<String, Object>(); 
+		Map<String, String> imagemap = new HashMap<String, String>();
+
+		ProcessInstance process = processEngine.getRuntimeService().createProcessInstanceQuery().processInstanceId(processId).singleResult();
+		InputStream diagramInputStream = processEngine.getRepositoryService().getProcessDiagram(process.getProcessDefinitionId());
+		BpmnModel model = processEngine.getRepositoryService().getBpmnModel(process.getProcessDefinitionId());
+		List<Task> tasks = processEngine.getTaskService().createTaskQuery().processDefinitionId(process.getProcessDefinitionId()).list();
+
+		try {
+			BufferedImage diagramImage = ImageIO.read(diagramInputStream);
+
+			Graphics2D graphics = (Graphics2D) diagramImage.getGraphics();
+			graphics.setStroke(new BasicStroke(3));
+
+			boolean highlightTask;
+
+			for (Task task : tasks) {
+				if (ownedTaskIdList != null && ownedTaskIdList.contains(task.getId())) {
+					highlightTask = true;
+					graphics.setColor(ownedColor == null ? Color.blue : ownedColor);
+				}else if (!onlyOwnedTasks) {
+					highlightTask = true;
+					graphics.setColor(Color.red);
+				} else {
+					highlightTask = false;
+				}
+
+				if (highlightTask) {
+					GraphicInfo x = model.getLocationMap().get(task.getTaskDefinitionKey());
+					if (x != null) {
+						graphics.drawRoundRect((int)x.getX(), (int)x.getY(), (int)x.getWidth(), (int)x.getHeight(), 5, 5);
+						imagemap.put(task.getId(), (int)x.getX() + "," + (int)x.getY() + "," + (int)(x.getX() + x.getWidth()) + "," + (int)(x.getY() + x.getHeight()));
+					}
+				}
+			}
+
+			result.put("image", diagramImage);
+			result.put("imagemap", imagemap);
+
+			return result;
+
+		} catch (IOException e) {
+			e.printStackTrace();
+			throw new TUIKProcessEngineException(e);
+		}	
+	}	
+	
+	/**
+	 * Returns the image and the image map (active tasks) of the process diagram with the given process id and highlights the active tasks
+	 * of the user and its assigned groups
+	 * @param processId
+	 * @param username
+	 * @param groups
+	 * @return HashMap
+	 * 	Keys: "image" [class : BufferedImage] is the diagram of the process
+	 * 		  "imagemap" [class : HashMap] ; 
+	 * 				key  : [String] is the task Id of the active task
+	 * 				value: [String] is the imagemap coordinates of the task
+	 */
+	public Map<String, Object> getProcessDiagramForInstanceWithMapAll(String processId, String username, List<String> groups)
+	{
+		List<String> taskIds = this.getTaskIdsInvolved(username, groups);
+					
+		return this.getProcessDiagramForInstanceWithMap(processId, null, taskIds, false);
+	}		
+
+	/**
+	 * Returns the image and the image map (active tasks of the given user and its assigned groups) of the process diagram with the given process id 
+	 * @param processId
+	 * @param username
+	 * @param groups
+	 * @return HashMap
+	 * 	Keys: "image" [class : BufferedImage] is the diagram of the process
+	 * 		  "imagemap" [class : HashMap] ; 
+	 * 				key  : [String] is the task Id of the active task
+	 * 				value: [String] is the imagemap coordinates of the task
+	 */
+
+	public Map<String, Object> getProcessDiagramForInstanceWithMapInvolved(String processId, String username, List<String> groups)
+	{
+		List<String> taskIds = this.getTaskIdsInvolved(username, groups);
+					
+		return this.getProcessDiagramForInstanceWithMap(processId, null, taskIds, true);
+	}		
 
 }

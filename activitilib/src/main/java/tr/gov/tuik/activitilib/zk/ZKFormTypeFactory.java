@@ -6,6 +6,7 @@ import java.util.Map;
 import tr.gov.tuik.activitilib.types.AbstractComboboxFormType;
 import tr.gov.tuik.activitilib.types.AbstractDateFormType;
 import tr.gov.tuik.activitilib.types.AbstractDecimalboxFormType;
+import tr.gov.tuik.activitilib.types.AbstractFileFormType;
 import tr.gov.tuik.activitilib.types.AbstractIntboxFormType;
 import tr.gov.tuik.activitilib.types.AbstractPasswordFormType;
 import tr.gov.tuik.activitilib.types.AbstractTextareaFormType;
@@ -34,6 +35,9 @@ public class ZKFormTypeFactory implements FormTypeFactoryInterface
 		formTypes.put(AbstractTextareaFormType.NAME, ZKTextareaFormType.class);
 		formTypes.put(AbstractDateFormType.NAME, ZKDateFormType.class);
 		formTypes.put(AbstractPasswordFormType.NAME, ZKPasswordFormType.class);
+		formTypes.put(AbstractFileFormType.NAME, ZKFileFormType.class);
+		formTypes.put(ZKStudyComboboxFormType.NAME, ZKStudyComboboxFormType.class);
+		formTypes.put(ZKStaffComboboxFormType.NAME, ZKStaffComboboxFormType.class);		
 	}
 	
 	public ActivitiFormTypeInterface getFormTypeInstance(String name)

@@ -18,21 +18,4 @@
 		</property>
 	</bean>
 
-	<bean id="formTypeConverter"
-		class="org.activiti.engine.impl.cfg.StandaloneProcessEngineConfiguration">
-		<property name="jdbcUrl" value="jdbc:postgresql://localhost:5432/activiti" />
-		<property name="jdbcUsername" value="activiti" />
-		<property name="jdbcPassword" value="activiti" />
-		<property name="jdbcDriver" value="org.postgresql.Driver" />
-		<property name="databaseSchemaUpdate" value="true" />
-		<property name="jobExecutorActivate" value="false" />
-		<property name="mailServerHost" value="ali.ozeren@gmail.com" />
-		<property name="mailServerPort" value="5025" />
-
-		<property name="formTypes">
-			<bean class="tr.gov.tuik.activitilib.zk.ZKCustomFormTypes" />
-		</property>
-	</bean>
-
-
 </beans>

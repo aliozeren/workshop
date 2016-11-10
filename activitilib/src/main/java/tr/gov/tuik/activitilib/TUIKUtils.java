@@ -8,7 +8,8 @@ import org.apache.log4j.Logger;
 import org.json.JSONArray;
 import org.json.JSONException;
 
-public class TUIKUtils {
+public class TUIKUtils 
+{
 
 	private final static Logger logger = Logger.getLogger(TUIKUtils.class);
 
@@ -86,4 +87,5 @@ public class TUIKUtils {
 		
 		return options;
 	}
+	
 }
