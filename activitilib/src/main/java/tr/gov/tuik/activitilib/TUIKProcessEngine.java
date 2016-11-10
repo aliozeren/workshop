@@ -583,7 +583,7 @@ public class TUIKProcessEngine
 	{
 		if (mainList == null || mainList.size() == 0 ) {
 			return listToAdd;
-		} else {
+		} else if (listToAdd != null && listToAdd.size() > 0){
 			mainList.addAll(listToAdd);
 		}
 		return mainList;
@@ -1021,6 +1021,42 @@ public class TUIKProcessEngine
 
 		}	
 	}
+	
+	
+	/**
+	 * Returns the imagemap of the active tasks of the user and writes the PNG image of the process diagram with the given process id in the output stream
+	 * @param processId
+	 * @param out
+	 * @return  HashMap 
+	 * 				key  : [String] is the task Id of the active task
+	 * 				value: [String] is the imagemap coordinates of the task
+	 */
+	public Map<String, String> getProcessDiagramForInstanceWithMapAll(String processId, OutputStream out, String username, List<String> groups)
+	{
+		
+		List<String> taskIds = this.getTaskIdsInvolved(username, groups);
+		
+		return this.getProcessDiagramForInstanceWithMap(processId, out, null, taskIds, false);
+		
+	}
+	
+	/**
+	 * Returns the imagemap of the active tasks and writes the PNG image of the process diagram with the given process id in the output stream and highlights the active tasks
+	 * of the given user and its assigned groups
+	 * @param processId
+	 * @param out
+	 * @return  HashMap 
+	 * 				key  : [String] is the task Id of the active task
+	 * 				value: [String] is the imagemap coordinates of the task
+	 */
+	public Map<String, String> getProcessDiagramForInstanceWithMapInvolved(String processId, OutputStream out, String username, List<String> groups)
+	{
+		
+		List<String> taskIds = this.getTaskIdsInvolved(username, groups);
+		
+		return this.getProcessDiagramForInstanceWithMap(processId, out, null, taskIds, true);
+		
+	}	
 	
 	/**
 	 * Returns the image of the process diagram with the given process id and draws the active tasks
