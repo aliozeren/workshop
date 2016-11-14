@@ -1128,7 +1128,7 @@ public class TUIKProcessEngine
 	{
 
 		Map<String, Object> result = new HashMap<String, Object>(); 
-		Map<String, String> imagemap = new HashMap<String, String>();
+		Map<Task, String> imagemap = new HashMap<Task, String>();
 
 		ProcessInstance process = processEngine.getRuntimeService().createProcessInstanceQuery().processInstanceId(processId).singleResult();
 		InputStream diagramInputStream = processEngine.getRepositoryService().getProcessDiagram(process.getProcessDefinitionId());
@@ -1158,7 +1158,7 @@ public class TUIKProcessEngine
 					GraphicInfo x = model.getLocationMap().get(task.getTaskDefinitionKey());
 					if (x != null) {
 						graphics.drawRoundRect((int)x.getX(), (int)x.getY(), (int)x.getWidth(), (int)x.getHeight(), 5, 5);
-						imagemap.put(task.getId(), (int)x.getX() + "," + (int)x.getY() + "," + (int)(x.getX() + x.getWidth()) + "," + (int)(x.getY() + x.getHeight()));
+						imagemap.put(task, (int)x.getX() + "," + (int)x.getY() + "," + (int)(x.getX() + x.getWidth()) + "," + (int)(x.getY() + x.getHeight()));
 					}
 				}
 			}
