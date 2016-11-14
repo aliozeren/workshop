@@ -15,6 +15,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Set;
 
 import javax.imageio.ImageIO;
 
@@ -1210,5 +1211,25 @@ public class TUIKProcessEngine
 					
 		return this.getProcessDiagramForInstanceWithMap(processId, null, taskIds, true);
 	}		
+	
+	/**
+	 * Return active process by instances
+	 * 
+	 * @param processInstanceIds
+	 * @return
+	 *  
+	 */
+	public List<HistoricProcessInstance> getActiveProcessByIds(Set<String> processInstanceIds) {
+		HistoryService historyService = pec.getHistoryService();
+		HistoricProcessInstanceQuery query = historyService.createHistoricProcessInstanceQuery()
+				.includeProcessVariables();
+		if (processInstanceIds != null) {
+			query.processInstanceIds(processInstanceIds);
+		}
 
+		query.unfinished();
+
+		List<HistoricProcessInstance> lp = query.orderByProcessInstanceStartTime().desc().list();
+		return lp;
+	}
 }
