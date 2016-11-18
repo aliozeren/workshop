@@ -1219,7 +1219,12 @@ public class TUIKProcessEngine
 	 * @return
 	 *  
 	 */
-	public List<HistoricProcessInstance> getActiveProcessByIds(Set<String> processInstanceIds) {
+	public List<HistoricProcessInstance> getActiveProcessByIds(Set<String> processInstanceIds) 
+	{	
+		if (processInstanceIds.isEmpty()) {
+			throw new TUIKProcessEngineException("Process Instance Ids is empty");
+		}
+		
 		HistoryService historyService = pec.getHistoryService();
 		HistoricProcessInstanceQuery query = historyService.createHistoricProcessInstanceQuery()
 				.includeProcessVariables();
