@@ -544,7 +544,19 @@ public class TUIKProcessEngine
 		taskQuery.includeTaskLocalVariables();
 		return taskQuery.list();
 	}
-
+	/**
+	 * Returns the tasks which the user is related for 
+	 * @param username - name of the user
+	 * @return
+	 */
+	public List<Task> getUserRelaytedTasks(String username) 
+	{
+		TaskQuery taskQuery = processEngine.getTaskService().createTaskQuery();
+		taskQuery.taskOwner(username);
+		taskQuery.includeTaskLocalVariables();
+		return taskQuery.list();
+	}
+	
 	/**
 	 * Returns the tasks assigned to a group (role)
 	 * @param groupName - name of the group (role)
