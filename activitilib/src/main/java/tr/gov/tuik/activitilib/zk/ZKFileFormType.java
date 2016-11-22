@@ -16,6 +16,7 @@ public class ZKFileFormType extends AbstractFileFormType
 		Div component = new Div();
 		component= (Div) ZKInputUtils.getInstance().createHtmlBasedComponent(component, this);
 		
+		component.setAttribute(TUIKConstants.COMBOBOX_TYPE_IDENTIFIER, ZKFileFormType.NAME);
 		component.setAttribute(TUIKConstants.LABEL, super.getLabel());
 		component.setAttribute(AbstractFileFormType.UPLOAD, super.getUpload());
 		component.setAttribute(AbstractFileFormType.DOWNLOAD, super.getDownload());		
