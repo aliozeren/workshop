@@ -29,8 +29,8 @@ public abstract class AbstractFileFormType extends AbstractCommonFormType
 	{
 		super.parseInput(property);
 		this.upload= super.getMap().get(AbstractFileFormType.UPLOAD) != null ? TUIKConstants.Answer.YES : TUIKConstants.Answer.NO;
-		this.upload= super.getMap().get(AbstractFileFormType.DOWNLOAD) != null ? TUIKConstants.Answer.YES : TUIKConstants.Answer.NO;
-		this.upload= super.getMap().get(AbstractFileFormType.IDENTIFIER);
+		this.download= super.getMap().get(AbstractFileFormType.DOWNLOAD) != null ? TUIKConstants.Answer.YES : TUIKConstants.Answer.NO;
+		this.identifier= super.getMap().get(AbstractFileFormType.IDENTIFIER);
 		this.maxsize= super.getMap().get(AbstractFileFormType.MAXSIZE);
 		this.filePattern= super.getMap().get(AbstractFileFormType.FILE_PATTERN);
 
