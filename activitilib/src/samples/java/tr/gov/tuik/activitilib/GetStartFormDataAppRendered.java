@@ -9,7 +9,7 @@ public class GetStartFormDataAppRendered
 
     public static void main( String[] args )
     {
-    	Object startForm = TUIKFormService.getInstance().getRenderedStartForm("formPropTest");
+    	Object startForm = TUIKFormService.getInstance().getRenderedTaskForm("107508");
 
     	logger.info(startForm);
     	

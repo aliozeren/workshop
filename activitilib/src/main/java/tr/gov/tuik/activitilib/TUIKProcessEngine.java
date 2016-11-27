@@ -29,10 +29,14 @@ import org.activiti.engine.history.HistoricIdentityLink;
 import org.activiti.engine.history.HistoricProcessInstance;
 import org.activiti.engine.history.HistoricProcessInstanceQuery;
 import org.activiti.engine.history.HistoricTaskInstance;
+import org.activiti.engine.impl.identity.Authentication;
 import org.activiti.engine.repository.Deployment;
 import org.activiti.engine.repository.ProcessDefinition;
 import org.activiti.engine.runtime.ProcessInstance;
 import org.activiti.engine.runtime.ProcessInstanceQuery;
+import org.activiti.engine.task.Comment;
+import org.activiti.engine.task.Event;
+import org.activiti.engine.task.IdentityLink;
 import org.activiti.engine.task.Task;
 import org.activiti.engine.task.TaskQuery;
 import org.apache.log4j.Logger;
@@ -456,7 +460,17 @@ public class TUIKProcessEngine
 				.processInstanceId(processId).includeProcessVariables().orderByTaskCreateTime().asc().list();
 	}
 
-	public List<HistoricIdentityLink> getTaskIdentity(String taskId)
+	/**
+	 * Returns the identity links for a task, users, groups etc with identity link type
+	 * @param taskId
+	 * @return
+	 */
+	public List<IdentityLink> getTaskIdentityLinks(String taskId) 
+	{
+		return processEngine.getTaskService().getIdentityLinksForTask(taskId);
+	}
+	
+	public List<HistoricIdentityLink> getTaskHistoricIdentityLinks(String taskId)
 	{
 		return pec.getHistoryService().getHistoricIdentityLinksForTask(taskId);
 	}
@@ -544,19 +558,21 @@ public class TUIKProcessEngine
 		taskQuery.includeTaskLocalVariables();
 		return taskQuery.list();
 	}
+
+
 	/**
 	 * Returns the tasks which the user is related for 
 	 * @param username - name of the user
 	 * @return
 	 */
-	public List<Task> getUserRelaytedTasks(String username) 
+	public List<Task> getUserRelatedTasks(String username) 
 	{
 		TaskQuery taskQuery = processEngine.getTaskService().createTaskQuery();
-		taskQuery.taskOwner(username);
+		taskQuery.taskInvolvedUser(username);
 		taskQuery.includeTaskLocalVariables();
 		return taskQuery.list();
 	}
-	
+
 	/**
 	 * Returns the tasks assigned to a group (role)
 	 * @param groupName - name of the group (role)
@@ -590,8 +606,8 @@ public class TUIKProcessEngine
 
 		return null;
 	}
-	
-	
+
+
 	private List<Task> addToList(List<Task> mainList, List<Task> listToAdd) 
 	{
 		if (mainList == null || mainList.size() == 0 ) {
@@ -601,7 +617,7 @@ public class TUIKProcessEngine
 		}
 		return mainList;
 	}	
-	
+
 	/**
 	 * @param username
 	 * @param groups
@@ -609,25 +625,25 @@ public class TUIKProcessEngine
 	 */
 	public List<Task> getTasksInvolved(String username, List<String> groups) 
 	{
-		
+
 		List<Task> tlist = null;
-		
+
 		tlist = this.addToList(tlist, getUserTasks(username));
 		tlist = this.addToList(tlist, getUserCandidateTasks(username));
 		tlist = this.addToList(tlist, getGroupTasks(groups));
-		
+
 		if (tlist != null) {
 			Collections.sort(tlist, new Comparator<Task>() {
-				
+
 				public int compare(Task f1, Task f2) {
 					return f1.getCreateTime().compareTo(f2.getCreateTime());
 				}
 			});		
 		}
-		
+
 		return tlist; 
 	}
-	
+
 	/**
 	 * @param username
 	 * @param groups
@@ -635,18 +651,18 @@ public class TUIKProcessEngine
 	 */
 	public List<String> getTaskIdsInvolved(String username, List<String> groups) 
 	{
-		
+
 		List<String> result = null;
-		
+
 		List<Task> tlist = null;
-		
+
 		tlist = this.addToList(tlist, getUserTasks(username));
 		tlist = this.addToList(tlist, getUserCandidateTasks(username));
 		tlist = this.addToList(tlist, getGroupTasks(groups));
-		
+
 		if (tlist != null) {
 			Collections.sort(tlist, new Comparator<Task>() {
-				
+
 				public int compare(Task f1, Task f2) {
 					return f1.getCreateTime().compareTo(f2.getCreateTime());
 				}
@@ -656,9 +672,47 @@ public class TUIKProcessEngine
 				result.add(t.getId());
 			}
 		}
-		
+
 		return result; 
 	}	
+
+
+	/**
+	 * involves the user to the task with the given identity
+	 * 
+	 * @param taskId
+	 * @param username
+	 * @param identityLinkType
+	 * Activiti native identity types are;
+	 *		public static final String ASSIGNEE = "assignee"
+	 *		public static final String CANDIDATE = "candidate";
+	 *		public static final String OWNER = "owner";
+	 *		public static final String STARTER = "starter";
+	 *		public static final String PARTICIPANT = "participant";
+	 */
+	public void involveUser(String taskId, String username, String identityLinkType) 
+	{
+		processEngine.getTaskService().addUserIdentityLink(taskId, username, identityLinkType);
+	}
+	
+	/**
+	 * involves the group to the task with the given identity
+	 * 
+	 * @param taskId
+	 * @param username
+	 * @param identityLinkType
+	 * Activiti native identity types are;
+	 *		public static final String ASSIGNEE = "assignee"
+	 *		public static final String CANDIDATE = "candidate";
+	 *		public static final String OWNER = "owner";
+	 *		public static final String STARTER = "starter";
+	 *		public static final String PARTICIPANT = "participant";
+	 */	
+	public void involveGroup(String taskId, String group, String identityLinkType) 
+	{
+		processEngine.getTaskService().addGroupIdentityLink(taskId, group, identityLinkType);
+	}
+	
 	
 	/**
 	 * Returns process instance specified by key and variables 
@@ -985,9 +1039,9 @@ public class TUIKProcessEngine
 	 */
 	public Map<String, String> getProcessDiagramForInstanceWithMap(String processId, OutputStream out, Color ownedColor, List<String> ownedTaskIdList, boolean onlyOwnedTasks)
 	{
-		
+
 		Map<String, String> imagemap = new HashMap<String, String>();
-		
+
 		ProcessInstance process = processEngine.getRuntimeService().createProcessInstanceQuery().processInstanceId(processId).singleResult();
 		InputStream diagramInputStream = processEngine.getRepositoryService().getProcessDiagram(process.getProcessDefinitionId());
 		BpmnModel model = processEngine.getRepositoryService().getBpmnModel(process.getProcessDefinitionId());
@@ -1019,13 +1073,13 @@ public class TUIKProcessEngine
 					if (x != null) {
 						graphics.drawRoundRect((int)x.getX(), (int)x.getY(), (int)x.getWidth(), (int)x.getHeight(), 5, 5);
 						imagemap.put(task.getId(), (int)x.getX() + "," + (int)x.getY() + "," + (int)(x.getX() + x.getWidth()) + "," + (int)(x.getY() + x.getHeight()));
-						
+
 					}
 				}
 			}
 
 			ImageIO.write(diagramImage, "PNG", out);
-			
+
 			return imagemap;
 
 		} catch (IOException e) {
@@ -1034,8 +1088,8 @@ public class TUIKProcessEngine
 
 		}	
 	}
-	
-	
+
+
 	/**
 	 * Returns the imagemap of the active tasks of the user and writes the PNG image of the process diagram with the given process id in the output stream
 	 * @param processId
@@ -1046,13 +1100,13 @@ public class TUIKProcessEngine
 	 */
 	public Map<String, String> getProcessDiagramForInstanceWithMapAll(String processId, OutputStream out, String username, List<String> groups)
 	{
-		
+
 		List<String> taskIds = this.getTaskIdsInvolved(username, groups);
-		
+
 		return this.getProcessDiagramForInstanceWithMap(processId, out, null, taskIds, false);
-		
+
 	}
-	
+
 	/**
 	 * Returns the imagemap of the active tasks and writes the PNG image of the process diagram with the given process id in the output stream and highlights the active tasks
 	 * of the given user and its assigned groups
@@ -1064,13 +1118,13 @@ public class TUIKProcessEngine
 	 */
 	public Map<String, String> getProcessDiagramForInstanceWithMapInvolved(String processId, OutputStream out, String username, List<String> groups)
 	{
-		
+
 		List<String> taskIds = this.getTaskIdsInvolved(username, groups);
-		
+
 		return this.getProcessDiagramForInstanceWithMap(processId, out, null, taskIds, true);
-		
+
 	}	
-	
+
 	/**
 	 * Returns the image of the process diagram with the given process id and draws the active tasks
 	 * @param processId
@@ -1122,7 +1176,7 @@ public class TUIKProcessEngine
 			throw new TUIKProcessEngineException(e);
 		}	
 	}	
-	
+
 	/**
 	 * Returns the image and the image map (active tasks) of the process diagram with the given process id and draws the active tasks
 	 * @param processId
@@ -1185,7 +1239,7 @@ public class TUIKProcessEngine
 			throw new TUIKProcessEngineException(e);
 		}	
 	}	
-	
+
 	/**
 	 * Returns the image and the image map (active tasks) of the process diagram with the given process id and highlights the active tasks
 	 * of the user and its assigned groups
@@ -1201,7 +1255,7 @@ public class TUIKProcessEngine
 	public Map<String, Object> getProcessDiagramForInstanceWithMapAll(String processId, String username, List<String> groups)
 	{
 		List<String> taskIds = this.getTaskIdsInvolved(username, groups);
-					
+
 		return this.getProcessDiagramForInstanceWithMap(processId, null, taskIds, false);
 	}		
 
@@ -1220,10 +1274,10 @@ public class TUIKProcessEngine
 	public Map<String, Object> getProcessDiagramForInstanceWithMapInvolved(String processId, String username, List<String> groups)
 	{
 		List<String> taskIds = this.getTaskIdsInvolved(username, groups);
-					
+
 		return this.getProcessDiagramForInstanceWithMap(processId, null, taskIds, true);
 	}		
-	
+
 	/**
 	 * Return active process by instances
 	 * 
@@ -1236,7 +1290,7 @@ public class TUIKProcessEngine
 		if (processInstanceIds.isEmpty()) {
 			throw new TUIKProcessEngineException("Process Instance Ids is empty");
 		}
-		
+
 		HistoryService historyService = pec.getHistoryService();
 		HistoricProcessInstanceQuery query = historyService.createHistoricProcessInstanceQuery()
 				.includeProcessVariables();
@@ -1249,4 +1303,80 @@ public class TUIKProcessEngine
 		List<HistoricProcessInstance> lp = query.orderByProcessInstanceStartTime().desc().list();
 		return lp;
 	}
+	
+	
+	public synchronized void addCommentToTask(String userId, String taskId, String comment, String commentType) 
+	{
+		Authentication.setAuthenticatedUserId(userId);
+		processEngine.getTaskService().addComment(taskId, null,commentType, comment);
+		Authentication.setAuthenticatedUserId(null);
+	}
+
+	public synchronized void addCommentToProcessInstance(String userId, String processInstanceId, String comment, String commentType) 
+	{
+		Authentication.setAuthenticatedUserId(userId);
+		processEngine.getTaskService().addComment(null, processInstanceId,commentType, comment);
+		Authentication.setAuthenticatedUserId(null);
+	}
+	
+	public Comment getComment(String commentId) 
+	{
+		return processEngine.getTaskService().getComment(commentId);
+	}
+	
+	/**
+	 * Returns comments on a task with the given type. If type is given null only "comment" type of comments are returned
+	 * @param taskId
+	 * @param commentType
+	 * 		native comment types;
+	 * 		CommentEntity.TYPE_EVENT = "event";
+	 * 		CommentEntity.TYPE_COMMENT = "comment";
+	 * @return
+	 */
+	public List<Comment> getTaskComments(String taskId, String commentType) 
+	{
+		if (commentType == null) {
+			return processEngine.getTaskService().getTaskComments(taskId);
+		} else {
+			return processEngine.getTaskService().getTaskComments(taskId, commentType);
+		}
+	}
+
+	/**
+	 * Returns comments on a process instance with the given type. If type is given null only "comment" type of comments are returned
+	 * @param taskId
+	 * @param commentType
+	 * 		native comment types;
+	 * 		CommentEntity.TYPE_EVENT = "event";
+	 * 		CommentEntity.TYPE_COMMENT = "comment";
+	 * @return
+	 */
+	public List<Comment> getProcessInstanceComments(String processInstanceId, String commentType) 
+	{
+		if (commentType == null) {
+			return processEngine.getTaskService().getProcessInstanceComments(processInstanceId);
+		} else {
+			return processEngine.getTaskService().getProcessInstanceComments(processInstanceId, commentType);
+		}
+	}
+	
+	/**
+	 * Returns events on a task.
+	 * Event Types: 
+	 * 		Event.ACTION_ADD_ATTACHMENT	"AddAttachment"
+	 * 		Event.ACTION_ADD_COMMENT	"AddComment"
+	 * 		Event.ACTION_ADD_GROUP_LINK	"AddGroupLink"
+	 * 		Event.ACTION_ADD_USER_LINK	"AddUserLink"
+	 * 		Event.ACTION_DELETE_ATTACHMENT	"DeleteAttachment"
+	 * 		Event.ACTION_DELETE_GROUP_LINK	"DeleteGroupLink"
+	 * 		Event.ACTION_DELETE_USER_LINK	"DeleteUserLink"
+	 * @param taskId
+	 * @return
+	 */
+	public List<Event> getTaskEvents(String taskId) 
+	{
+		return processEngine.getTaskService().getTaskEvents(taskId);
+	}	
+	
+	
 }

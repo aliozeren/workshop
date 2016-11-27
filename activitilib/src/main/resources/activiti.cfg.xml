@@ -16,6 +16,12 @@
 		<property name="formTypes">
 			<bean class="tr.gov.tuik.activitilib.zk.ZKCustomFormTypes" />
 		</property>
+		
+		<property name="customMybatisMappers">
+		  <set>
+		    <value>tr.gov.tuik.activitilib.TUIKSqlMapper</value>
+		  </set>
+		</property>
 	</bean>
 
 </beans>
