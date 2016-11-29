@@ -986,7 +986,7 @@ public class TUIKProcessEngine
 		ProcessInstance process = processEngine.getRuntimeService().createProcessInstanceQuery().processInstanceId(processId).singleResult();
 		InputStream diagramInputStream = processEngine.getRepositoryService().getProcessDiagram(process.getProcessDefinitionId());
 		BpmnModel model = processEngine.getRepositoryService().getBpmnModel(process.getProcessDefinitionId());
-		List<Task> tasks = processEngine.getTaskService().createTaskQuery().processDefinitionId(process.getProcessDefinitionId()).list();
+		List<Task> tasks = processEngine.getTaskService().createTaskQuery().processInstanceId(process.getProcessInstanceId()).list();
 
 		try {
 
@@ -1045,7 +1045,7 @@ public class TUIKProcessEngine
 		ProcessInstance process = processEngine.getRuntimeService().createProcessInstanceQuery().processInstanceId(processId).singleResult();
 		InputStream diagramInputStream = processEngine.getRepositoryService().getProcessDiagram(process.getProcessDefinitionId());
 		BpmnModel model = processEngine.getRepositoryService().getBpmnModel(process.getProcessDefinitionId());
-		List<Task> tasks = processEngine.getTaskService().createTaskQuery().processDefinitionId(process.getProcessDefinitionId()).list();
+		List<Task> tasks = processEngine.getTaskService().createTaskQuery().processInstanceId(process.getProcessInstanceId()).list();
 
 		try {
 
@@ -1140,7 +1140,7 @@ public class TUIKProcessEngine
 		ProcessInstance process = processEngine.getRuntimeService().createProcessInstanceQuery().processInstanceId(processId).singleResult();
 		InputStream diagramInputStream = processEngine.getRepositoryService().getProcessDiagram(process.getProcessDefinitionId());
 		BpmnModel model = processEngine.getRepositoryService().getBpmnModel(process.getProcessDefinitionId());
-		List<Task> tasks = processEngine.getTaskService().createTaskQuery().processDefinitionId(process.getProcessDefinitionId()).list();
+		List<Task> tasks = processEngine.getTaskService().createTaskQuery().processInstanceId(process.getProcessInstanceId()).list();
 
 		try {
 			BufferedImage diagramImage = ImageIO.read(diagramInputStream);
@@ -1199,7 +1199,7 @@ public class TUIKProcessEngine
 		ProcessInstance process = processEngine.getRuntimeService().createProcessInstanceQuery().processInstanceId(processId).singleResult();
 		InputStream diagramInputStream = processEngine.getRepositoryService().getProcessDiagram(process.getProcessDefinitionId());
 		BpmnModel model = processEngine.getRepositoryService().getBpmnModel(process.getProcessDefinitionId());
-		List<Task> tasks = processEngine.getTaskService().createTaskQuery().processDefinitionId(process.getProcessDefinitionId()).list();
+		List<Task> tasks = processEngine.getTaskService().createTaskQuery().processInstanceId(process.getProcessInstanceId()).list();
 
 		try {
 			BufferedImage diagramImage = ImageIO.read(diagramInputStream);
