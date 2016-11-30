@@ -1,7 +1,7 @@
 package tr.gov.tuik.activitilib.zk;
 
 import org.activiti.engine.form.FormProperty;
-import org.zkoss.zul.Checkbox;
+import org.zkoss.zul.Textbox;
 
 import tr.gov.tuik.activitilib.types.AbstractPasswordFormType;
 
