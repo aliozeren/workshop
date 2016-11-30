@@ -11,8 +11,9 @@ public class ZKPasswordFormType extends AbstractPasswordFormType
 
 	public DynamicModel renderInput(FormProperty property) 
 	{
-		Checkbox component = new Checkbox();
-		component= (Checkbox) ZKInputUtils.getInstance().createHtmlBasedComponent(component, this);
+		Textbox component = new Textbox();
+		component= (Textbox) ZKInputUtils.getInstance().createHtmlBasedComponent(component, this);
+		component.setType("password");
 
 		return  ZKInputUtils.getInstance().getDynamicModel(this, component);
 		
