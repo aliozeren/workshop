@@ -17,7 +17,7 @@ public abstract class AbstractComboboxFormType extends AbstractCommonFormType
 	public AbstractFormType parseInput(FormProperty property)
 	{
 		super.parseInput(property);
-		options= TUIKUtils.getInstance().convertJSONStringToOptions(super.getMap().get("options"));
+		options= super.getMap();
 		return this;
 	}
 
