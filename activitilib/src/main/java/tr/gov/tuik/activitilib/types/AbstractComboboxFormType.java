@@ -5,8 +5,6 @@ import java.util.Map;
 import org.activiti.bpmn.model.FormProperty;
 import org.activiti.engine.form.AbstractFormType;
 
-import tr.gov.tuik.activitilib.TUIKUtils;
-
 public abstract class AbstractComboboxFormType extends AbstractCommonFormType
 {
 	private static final long serialVersionUID = 3868249214623992954L;
