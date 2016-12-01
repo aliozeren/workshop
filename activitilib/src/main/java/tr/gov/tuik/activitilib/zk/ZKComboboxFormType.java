@@ -11,7 +11,7 @@ public class ZKComboboxFormType extends AbstractComboboxFormType
 
 	private static final long serialVersionUID = 3868249214623992954L;
 
-	public DynamicModel renderInput(FormProperty property) 
+	public DynamicModel renderInput(FormProperty property, String value) 
 	{
 		Combobox component = new Combobox();
 		component= (Combobox) ZKInputUtils.getInstance().createHtmlBasedComponent(component, this);
@@ -23,6 +23,10 @@ public class ZKComboboxFormType extends AbstractComboboxFormType
 			component.appendChild(item);
 		}
 		
+		if (value != null) {
+			component.setValue(value);
+		}
+
 		return  ZKInputUtils.getInstance().getDynamicModel(this, component);
 	}
 	

@@ -17,7 +17,7 @@ public abstract class AbstractFileFormType extends AbstractCommonFormType
 	public static final String IDENTIFIER = "identifier";
 	public static final String MAXSIZE = "maxsize";
 	public static final String FILE_PATTERN = "filePattern";
-	
+	public static final String FILEVALUE = "fileValue";
 	
 	private String upload;
 	private String download;

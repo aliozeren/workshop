@@ -2,6 +2,7 @@ package tr.gov.tuik.activitilib;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import org.activiti.engine.FormService;
 import org.activiti.engine.ProcessEngine;
@@ -64,7 +65,9 @@ public class TUIKFormService
 		
 		assert(taskForm != null);
 		
-		return renderProperties(taskForm.getFormProperties());
+		Map<String, Object> variables = TUIKProcessEngine.getInstance().getProcessEngine().getTaskService().getVariables(taskId);
+		
+		return renderProperties(taskForm.getFormProperties(), variables);
 	}
 	
 	/**
@@ -105,7 +108,7 @@ public class TUIKFormService
 
 		StartFormData startForm = getFormService().getStartFormData(definition.getId());
 		
-		return renderProperties(startForm.getFormProperties());
+		return renderProperties(startForm.getFormProperties(), null);
 		
 	}
 	
@@ -117,7 +120,7 @@ public class TUIKFormService
 	{
 		StartFormData startForm = getFormService().getStartFormData(processDefinitionId);
 		
-		return renderProperties(startForm.getFormProperties());
+		return renderProperties(startForm.getFormProperties(), null);
 		
 	}	
 
@@ -176,9 +179,10 @@ public class TUIKFormService
 	
 	/**
 	 * @param list
+	 * @param variables 
 	 * @return
 	 */
-	public List<?> renderProperties(List<FormProperty> list)
+	public List<?> renderProperties(List<FormProperty> list, Map<String, Object> variables)
 	{
 		
 		List<Object> renderedForm= new ArrayList<Object>();
@@ -187,7 +191,13 @@ public class TUIKFormService
 			for (FormProperty property : list) {
 				if (property.getType() instanceof ActivitiFormTypeInterface) {
 					ActivitiFormTypeInterface prop= (ActivitiFormTypeInterface) property.getType();
-					renderedForm.add(prop.renderInput(property));
+					Object variable = null;
+					
+					if (variables != null && !variables.isEmpty() && prop.getVariable() != null) {
+						variable = variables.get(variable);
+						
+					}
+					renderedForm.add(prop.renderInput(property, variable != null ? variable.toString() : null));
 				}
 			}
 		}

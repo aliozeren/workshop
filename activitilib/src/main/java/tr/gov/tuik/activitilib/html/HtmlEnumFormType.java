@@ -9,7 +9,7 @@ public class HtmlEnumFormType extends AbstractComboboxFormType
 
 	private static final long serialVersionUID = 3868249214623992954L;
 
-	public String renderInput(FormProperty property) 
+	public String renderInput(FormProperty property, String value) 
 	{
 		return "<input type='enum'/>";
 	}

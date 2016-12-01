@@ -9,8 +9,8 @@ public class HtmlDateFormType extends AbstractDateFormType
 {
 	private static final long serialVersionUID = 3868249214623992114L;
 
-	public String renderInput(FormProperty property) 
-	{
+
+	public Object renderInput(FormProperty property, String value) {
 		return "<input type='date'/>";
 	}
 

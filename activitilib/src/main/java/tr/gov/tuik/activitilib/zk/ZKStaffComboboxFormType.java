@@ -16,7 +16,7 @@ public class ZKStaffComboboxFormType extends AbstractComboboxFormType
 	public static final String DEPARTMENT_PROPERTY = "department";
 	
 
-	public DynamicModel renderInput(FormProperty property) 
+	public DynamicModel renderInput(FormProperty property, String value) 
 	{
 		Combobox component = new Combobox();
 		component= (Combobox) ZKInputUtils.getInstance().createHtmlBasedComponent(component, this);
@@ -24,6 +24,10 @@ public class ZKStaffComboboxFormType extends AbstractComboboxFormType
 		component.setAttribute(TUIKConstants.COMBOBOX_TYPE_IDENTIFIER,ZKStaffComboboxFormType.NAME);
 		component.setAttribute(ZKStaffComboboxFormType.DEPARTMENT_PROPERTY, super.getMap().get(ZKStaffComboboxFormType.DEPARTMENT_PROPERTY));
 		
+
+		if (value != null) {
+			component.setValue(value);
+		}		
 		
 		return  ZKInputUtils.getInstance().getDynamicModel(this, component);
 	}

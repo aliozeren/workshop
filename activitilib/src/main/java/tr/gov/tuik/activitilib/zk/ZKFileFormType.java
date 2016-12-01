@@ -10,7 +10,7 @@ public class ZKFileFormType extends AbstractFileFormType
 {
 	private static final long serialVersionUID = 3868249214623992954L;
 
-	public DynamicModel renderInput(FormProperty property) 
+	public DynamicModel renderInput(FormProperty property, String value) 
 	{
 		
 		Div component = new Div();
@@ -19,10 +19,14 @@ public class ZKFileFormType extends AbstractFileFormType
 		component.setAttribute(TUIKConstants.COMBOBOX_TYPE_IDENTIFIER, ZKFileFormType.NAME);
 		component.setAttribute(TUIKConstants.LABEL, super.getLabel());
 		component.setAttribute(AbstractFileFormType.UPLOAD, super.getUpload());
-		component.setAttribute(AbstractFileFormType.DOWNLOAD, property.getValue());		
+		component.setAttribute(AbstractFileFormType.DOWNLOAD, super.getDownload());		
 		component.setAttribute(AbstractFileFormType.IDENTIFIER, super.getIdentifier());
 		component.setAttribute(AbstractFileFormType.MAXSIZE, super.getMaxsize());
 		component.setAttribute(AbstractFileFormType.FILE_PATTERN, super.getFilePattern());
+		
+		if (value != null) {
+			component.setAttribute(AbstractFileFormType.FILEVALUE, value);
+		}
 		
 		return  ZKInputUtils.getInstance().getDynamicModel(this, component, false);
 
