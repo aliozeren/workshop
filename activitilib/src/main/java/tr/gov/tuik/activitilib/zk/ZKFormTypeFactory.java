@@ -9,6 +9,7 @@ import tr.gov.tuik.activitilib.types.AbstractDecimalboxFormType;
 import tr.gov.tuik.activitilib.types.AbstractFileFormType;
 import tr.gov.tuik.activitilib.types.AbstractIntboxFormType;
 import tr.gov.tuik.activitilib.types.AbstractPasswordFormType;
+import tr.gov.tuik.activitilib.types.AbstractProcessFormType;
 import tr.gov.tuik.activitilib.types.AbstractTextareaFormType;
 import tr.gov.tuik.activitilib.types.AbstractTextboxFormType;
 import tr.gov.tuik.activitilib.types.ActivitiFormTypeInterface;
@@ -37,7 +38,8 @@ public class ZKFormTypeFactory implements FormTypeFactoryInterface
 		formTypes.put(AbstractPasswordFormType.NAME, ZKPasswordFormType.class);
 		formTypes.put(AbstractFileFormType.NAME, ZKFileFormType.class);
 		formTypes.put(ZKStudyComboboxFormType.NAME, ZKStudyComboboxFormType.class);
-		formTypes.put(ZKStaffComboboxFormType.NAME, ZKStaffComboboxFormType.class);		
+		formTypes.put(ZKStaffComboboxFormType.NAME, ZKStaffComboboxFormType.class);
+		formTypes.put(AbstractProcessFormType.NAME, ZKProcessFormType.class);
 	}
 	
 	public ActivitiFormTypeInterface getFormTypeInstance(String name)

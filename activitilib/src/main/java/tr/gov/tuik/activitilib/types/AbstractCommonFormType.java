@@ -69,8 +69,8 @@ public abstract class AbstractCommonFormType extends AbstractFormType implements
 		this.id= property.getId();
 		this.label= property.getName();
 		
-		this.height= map.get("height");
-		this.width= map.get("width");
+		this.height = map.get("height") != null ? map.get("height") : "100%";
+		this.width = map.get("width") != null ? map.get("width") : "100%";
 		this.styleClass= map.get("styleClass");
 		this.onClick= map.get("onClick");
 		this.onCreate= map.get("onCreate");
