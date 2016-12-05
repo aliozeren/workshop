@@ -39,6 +39,7 @@ public class ZKFormTypeFactory implements FormTypeFactoryInterface
 		formTypes.put(AbstractFileFormType.NAME, ZKFileFormType.class);
 		formTypes.put(ZKStudyComboboxFormType.NAME, ZKStudyComboboxFormType.class);
 		formTypes.put(ZKStaffComboboxFormType.NAME, ZKStaffComboboxFormType.class);
+		formTypes.put(ZKMailComboboxFormType.NAME, ZKMailComboboxFormType.class);
 		formTypes.put(AbstractProcessFormType.NAME, ZKProcessFormType.class);
 	}
 	
