@@ -16,7 +16,7 @@ public class ZKMailComboboxFormType extends AbstractComboboxFormType
 	public static final String GROUP_PROPERTY = "group";
 	
 
-	public DynamicModel renderInput(FormProperty property, String value) 
+	public DynamicModel renderInputForType(FormProperty property) 
 	{
 		Combobox component = new Combobox();
 		component= (Combobox) ZKInputUtils.getInstance().createHtmlBasedComponent(component, this);
@@ -25,8 +25,8 @@ public class ZKMailComboboxFormType extends AbstractComboboxFormType
 		component.setAttribute(ZKMailComboboxFormType.GROUP_PROPERTY, super.getMap().get(ZKMailComboboxFormType.GROUP_PROPERTY));
 		
 
-		if (value != null) {
-			component.setValue(value);
+		if (property.getValue() != null) {
+			component.setValue(property.getValue());
 		}		
 		
 		return  ZKInputUtils.getInstance().getDynamicModel(this, component);

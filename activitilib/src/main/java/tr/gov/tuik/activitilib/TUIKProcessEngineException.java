@@ -20,4 +20,8 @@ public class TUIKProcessEngineException extends RuntimeException
 		super(message);
 	}
 	
+	public TUIKProcessEngineException(String message, Throwable exception)
+	{
+		super(message, exception);
+	}
 }

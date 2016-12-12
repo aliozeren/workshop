@@ -13,9 +13,9 @@ import org.zkoss.zul.impl.InputElement;
 import org.zkoss.zul.impl.XulElement;
 
 import tr.gov.tuik.activitilib.types.AbstractCommonFormType;
-import tr.gov.tuik.activitilib.types.FormToMapConverter;
+import tr.gov.tuik.activitilib.utils.TUIKFormToMapConverterInterface;
 
-public class ZKInputUtils implements FormToMapConverter
+public class ZKInputUtils implements TUIKFormToMapConverterInterface
 {
 
 	private final static Logger logger = Logger.getLogger(ZKInputUtils.class);

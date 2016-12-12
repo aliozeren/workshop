@@ -1,4 +1,4 @@
-package tr.gov.tuik.activitilib;
+package tr.gov.tuik.activitilib.utils;
 
 import java.util.List;
 import java.util.Map;

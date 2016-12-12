@@ -16,7 +16,6 @@ public class CustomFormTypes extends FormTypes
 		}
 				
 		ActivitiFormTypeInterface formObject = factory.getFormTypeInstance(formProperty.getType());
-
 		if (formObject != null) {
 			formObject.setVariable(formProperty.getVariable());
 			return formObject.parseInput(formProperty);

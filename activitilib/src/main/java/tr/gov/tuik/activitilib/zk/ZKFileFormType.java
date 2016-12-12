@@ -10,7 +10,7 @@ public class ZKFileFormType extends AbstractFileFormType
 {
 	private static final long serialVersionUID = 3868249214623992954L;
 
-	public DynamicModel renderInput(FormProperty property, String value) 
+	public DynamicModel renderInputForType(FormProperty property) 
 	{
 		
 		Div component = new Div();
@@ -24,8 +24,8 @@ public class ZKFileFormType extends AbstractFileFormType
 		component.setAttribute(AbstractFileFormType.MAXSIZE, super.getMaxsize());
 		component.setAttribute(AbstractFileFormType.FILE_PATTERN, super.getFilePattern());
 		
-		if (value != null) {
-			component.setAttribute(AbstractFileFormType.FILEVALUE, value);
+		if (property.getValue() != null) {
+			component.setAttribute(AbstractFileFormType.FILEVALUE, property.getValue());
 		}
 		
 		return  ZKInputUtils.getInstance().getDynamicModel(this, component, false);

@@ -2,6 +2,8 @@ package tr.gov.tuik.activitilib;
 
 import org.apache.log4j.Logger;
 
+import tr.gov.tuik.activitilib.utils.TUIKRedmineUtils;
+
 import com.taskadapter.redmineapi.bean.Issue;
 
 public class TestRedmineApp 

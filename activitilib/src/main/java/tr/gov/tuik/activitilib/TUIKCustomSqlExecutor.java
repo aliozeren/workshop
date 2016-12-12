@@ -5,9 +5,14 @@ import java.util.Map;
 
 import org.activiti.engine.impl.cmd.AbstractCustomSqlExecution;
 import org.activiti.engine.impl.cmd.CustomSqlExecution;
+import org.apache.log4j.Logger;
+
+import tr.gov.tuik.activitilib.utils.TUIKSqlMapper;
 
 public class TUIKCustomSqlExecutor 
 {
+	private final static Logger logger = Logger.getLogger(TUIKCustomSqlExecutor.class);
+	
 	private static TUIKCustomSqlExecutor instance;
 	
 	private TUIKCustomSqlExecutor() {
@@ -18,6 +23,7 @@ public class TUIKCustomSqlExecutor
 	{
 		if (TUIKCustomSqlExecutor.instance == null) {
 			TUIKCustomSqlExecutor.instance = new TUIKCustomSqlExecutor();
+			logger.info("TUIK Custom Sql Executor is initialized...");
 		}
 		
 		return TUIKCustomSqlExecutor.instance;

@@ -9,9 +9,8 @@ public class ZKButtonFormType extends AbstractButtonFormType
 {
 	private static final long serialVersionUID = 3868249214623992954L;
 
-	public DynamicModel renderInput(FormProperty property, String value) 
+	public DynamicModel renderInputForType(FormProperty property) 
 	{
-		
 		Button component = new Button();
 		component= (Button) ZKInputUtils.getInstance().createHtmlBasedComponent(component, this);
 		

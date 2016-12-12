@@ -1,4 +1,4 @@
-package tr.gov.tuik.activitilib;
+package tr.gov.tuik.activitilib.utils;
 
 import java.util.Date;
 import java.util.LinkedHashMap;
@@ -53,7 +53,9 @@ public class TUIKUtils
 
 	public void logError(Logger logger, Exception e) 
 	{
-		logger.error(e.getMessage());
+		if (e != null) {
+			logger.error(e.getMessage());
+		}
 	}
 	
 	public Map<String, String> convertJSONStringToOptions(String optionsInJSON)

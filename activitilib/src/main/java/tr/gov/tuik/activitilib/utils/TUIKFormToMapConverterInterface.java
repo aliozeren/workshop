@@ -1,8 +1,8 @@
-package tr.gov.tuik.activitilib.types;
+package tr.gov.tuik.activitilib.utils;
 
 import java.util.Map;
 
-public interface FormToMapConverter 
+public interface TUIKFormToMapConverterInterface 
 {
 	public Map<String, String> formToMap(Object formProperties);
 }

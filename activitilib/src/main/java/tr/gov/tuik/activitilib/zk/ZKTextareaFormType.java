@@ -11,7 +11,7 @@ public class ZKTextareaFormType extends AbstractTextareaFormType
 	private static final long serialVersionUID = 3868249214623992954L;
 
 
-	public DynamicModel renderInput(FormProperty property, String value) 
+	public DynamicModel renderInputForType(FormProperty property) 
 	{
 		Textbox component = new Textbox();
 		component= (Textbox) ZKInputUtils.getInstance().createHtmlBasedComponent(component, this);
@@ -19,8 +19,8 @@ public class ZKTextareaFormType extends AbstractTextareaFormType
 		component.setRows(super.getRows());
 		component.setCols(super.getCols());
 		
-		if (value != null) {
-			component.setValue(value);
+		if (property.getValue() != null) {
+			component.setValue(property.getValue());
 		}
 		
 		return  ZKInputUtils.getInstance().getDynamicModel(this, component);

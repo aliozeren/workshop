@@ -21,7 +21,7 @@ public abstract class AbstractTextareaFormType extends AbstractCommonFormType
 			rows = Integer.parseInt(super.getMap().get("rows"));
 			cols = Integer.parseInt(super.getMap().get("cols"));
 		} catch (NumberFormatException e) {
-			throw new TUIKProcessEngineException("rows and cols values for textarea must be numeric");
+			throw new TUIKProcessEngineException("rows and cols values for textarea must be numeric", e);
 		}
 		
 		return this;

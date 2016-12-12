@@ -16,7 +16,7 @@ public class ZKStudyComboboxFormType extends AbstractComboboxFormType
 	public static final String STUDY_TYPE_PROPERTY = "studyType";
 	
 
-	public DynamicModel renderInput(FormProperty property, String value) 
+	public DynamicModel renderInputForType(FormProperty property) 
 	{
 		Combobox component = new Combobox();
 		component= (Combobox) ZKInputUtils.getInstance().createHtmlBasedComponent(component, this);
@@ -24,8 +24,8 @@ public class ZKStudyComboboxFormType extends AbstractComboboxFormType
 		component.setAttribute(TUIKConstants.COMBOBOX_TYPE_IDENTIFIER,ZKStudyComboboxFormType.NAME);
 		component.setAttribute(ZKStudyComboboxFormType.STUDY_TYPE_PROPERTY, super.getMap().get(ZKStudyComboboxFormType.STUDY_TYPE_PROPERTY));
 		
-		if (value != null) {
-			component.setValue(value);
+		if (property.getValue() != null) {
+			component.setValue(property.getValue());
 		}	
 		
 		return  ZKInputUtils.getInstance().getDynamicModel(this, component);

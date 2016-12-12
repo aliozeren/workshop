@@ -41,6 +41,8 @@ import org.activiti.engine.task.Task;
 import org.activiti.engine.task.TaskQuery;
 import org.apache.log4j.Logger;
 
+import tr.gov.tuik.activitilib.utils.TUIKUtils;
+
 public class TUIKProcessEngine 
 {
 
@@ -864,7 +866,7 @@ public class TUIKProcessEngine
 			}
 			return null;
 		} catch (Exception e) {
-			throw new TUIKProcessEngineException("Unexpected error");
+			throw new TUIKProcessEngineException("Unexpected error", e);
 		}
 	}
 
@@ -925,8 +927,7 @@ public class TUIKProcessEngine
 			BufferedImage diagramImage = ImageIO.read(diagramInputStream);
 			ImageIO.write(diagramImage, "PNG", out);
 		} catch (IOException e) {
-			e.printStackTrace();
-			throw new TUIKProcessEngineException("e");
+			throw new TUIKProcessEngineException("Error in getting process diagram with key : " + processDefinitionKey, e);
 		}		
 	}
 
@@ -941,8 +942,7 @@ public class TUIKProcessEngine
 			BufferedImage diagramImage = ImageIO.read(diagramInputStream);
 			ImageIO.write(diagramImage, "PNG", out);
 		} catch (IOException e) {
-			e.printStackTrace();
-			throw new TUIKProcessEngineException("e");
+			throw new TUIKProcessEngineException("Error in getting process diagram with id : " + processDefinitionId, e);
 		}		
 	}
 
@@ -1019,9 +1019,7 @@ public class TUIKProcessEngine
 			ImageIO.write(diagramImage, "PNG", out);
 
 		} catch (IOException e) {
-			e.printStackTrace();
-			throw new TUIKProcessEngineException(e);
-
+			throw new TUIKProcessEngineException("Error in getting process diagram for process id : " + processId, e);
 		}	
 	}
 
@@ -1082,9 +1080,7 @@ public class TUIKProcessEngine
 			return imagemap;
 
 		} catch (IOException e) {
-			e.printStackTrace();
-			throw new TUIKProcessEngineException(e);
-
+			throw new TUIKProcessEngineException("Error in getting process diagram for process id : " + processId, e);
 		}	
 	}
 
@@ -1171,8 +1167,7 @@ public class TUIKProcessEngine
 			return diagramImage;
 
 		} catch (IOException e) {
-			e.printStackTrace();
-			throw new TUIKProcessEngineException(e);
+			throw new TUIKProcessEngineException("Error in getting process diagram for process id : " + processId, e);
 		}	
 	}	
 
@@ -1234,8 +1229,7 @@ public class TUIKProcessEngine
 			return result;
 
 		} catch (IOException e) {
-			e.printStackTrace();
-			throw new TUIKProcessEngineException(e);
+			throw new TUIKProcessEngineException("Error in getting process diagram for process id : " + processId, e);
 		}	
 	}	
 

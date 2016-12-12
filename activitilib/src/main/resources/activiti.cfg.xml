@@ -19,7 +19,7 @@
 		
 		<property name="customMybatisMappers">
 		  <set>
-		    <value>tr.gov.tuik.activitilib.TUIKSqlMapper</value>
+		    <value>tr.gov.tuik.activitilib.utils.TUIKSqlMapper</value>
 		  </set>
 		</property>
 	</bean>

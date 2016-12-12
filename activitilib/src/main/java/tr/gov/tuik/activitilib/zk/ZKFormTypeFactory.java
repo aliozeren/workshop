@@ -3,6 +3,7 @@ package tr.gov.tuik.activitilib.zk;
 import java.util.HashMap;
 import java.util.Map;
 
+import tr.gov.tuik.activitilib.types.AbstractCheckboxFormType;
 import tr.gov.tuik.activitilib.types.AbstractComboboxFormType;
 import tr.gov.tuik.activitilib.types.AbstractDateFormType;
 import tr.gov.tuik.activitilib.types.AbstractDecimalboxFormType;
@@ -30,6 +31,7 @@ public class ZKFormTypeFactory implements FormTypeFactoryInterface
 		
 		// custom form types (date is used for both)
 		formTypes.put(AbstractComboboxFormType.NAME, ZKComboboxFormType.class);
+		formTypes.put(AbstractCheckboxFormType.NAME, ZKCheckboxFormType.class);
 		formTypes.put(AbstractIntboxFormType.NAME, ZKIntboxFormType.class);
 		formTypes.put(AbstractDecimalboxFormType.NAME, ZKDecimalboxFormType.class);
 		formTypes.put(AbstractTextboxFormType.NAME, ZKTextboxFormType.class);

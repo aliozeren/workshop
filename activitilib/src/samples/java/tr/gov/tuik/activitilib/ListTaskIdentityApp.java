@@ -1,17 +1,10 @@
 package tr.gov.tuik.activitilib;
 
-import java.util.List;
 import java.util.Map;
 
-import org.activiti.engine.ProcessEngine;
-import org.activiti.engine.TaskService;
-import org.activiti.engine.history.HistoricIdentityLink;
 import org.activiti.engine.task.Comment;
-import org.activiti.engine.task.Event;
 import org.activiti.engine.task.IdentityLink;
-import org.activiti.engine.task.IdentityLinkType;
 import org.activiti.engine.task.Task;
-import org.activiti.engine.task.TaskQuery;
 import org.apache.log4j.Logger;
 
 public class ListTaskIdentityApp 

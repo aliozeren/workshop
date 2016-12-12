@@ -1,21 +1,24 @@
 package tr.gov.tuik.activitilib;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 import org.activiti.engine.FormService;
 import org.activiti.engine.ProcessEngine;
 import org.activiti.engine.form.FormProperty;
 import org.activiti.engine.form.StartFormData;
 import org.activiti.engine.form.TaskFormData;
+import org.activiti.engine.impl.ProcessEngineImpl;
 import org.activiti.engine.repository.ProcessDefinition;
 import org.activiti.engine.runtime.ProcessInstance;
 import org.apache.log4j.Logger;
 
-import tr.gov.tuik.activitilib.types.ActivitiFormTypeInterface;
-import tr.gov.tuik.activitilib.types.FormToMapConverter;
+import tr.gov.tuik.activitilib.utils.TUIKFormToMapConverterInterface;
+import tr.gov.tuik.activitilib.utils.TUIKFormValuesResolveCmd;
 
+/**
+ * @author alio
+ *
+ */
 public class TUIKFormService 
 {
 	private final static Logger logger = Logger.getLogger(TUIKFormService.class);
@@ -43,7 +46,7 @@ public class TUIKFormService
 	{
 		return getProcessEngine().getFormService();
 	}
-	
+
 
 	/**
 	 * @param taskId
@@ -60,16 +63,14 @@ public class TUIKFormService
 	 */
 	public List<?> getRenderedTaskForm(String taskId)
 	{
-		
+
 		TaskFormData taskForm = getFormService().getTaskFormData(taskId);
-		
+
 		assert(taskForm != null);
-		
-		Map<String, Object> variables = TUIKProcessEngine.getInstance().getProcessEngine().getTaskService().getVariables(taskId);
-		
-		return renderProperties(taskForm.getFormProperties(), variables);
+
+		return renderProperties(taskForm.getFormProperties(), taskId);
 	}
-	
+
 	/**
 	 * @param processDefinitionKey
 	 * @return
@@ -107,11 +108,11 @@ public class TUIKFormService
 				.singleResult();
 
 		StartFormData startForm = getFormService().getStartFormData(definition.getId());
-		
+
 		return renderProperties(startForm.getFormProperties(), null);
-		
+
 	}
-	
+
 	/**
 	 * @param processDefinitionId
 	 * @return
@@ -119,9 +120,9 @@ public class TUIKFormService
 	public List<?> getRenderedStartFormByProcessId(String processDefinitionId)
 	{
 		StartFormData startForm = getFormService().getStartFormData(processDefinitionId);
-		
+
 		return renderProperties(startForm.getFormProperties(), null);
-		
+
 	}	
 
 	/**
@@ -130,78 +131,64 @@ public class TUIKFormService
 	 * @param properties
 	 * @return
 	 */
-	public ProcessInstance submitStartFormData(String processDefinitionKey, FormToMapConverter converter, Object properties)
+	public ProcessInstance submitStartFormData(String processDefinitionKey, TUIKFormToMapConverterInterface converter, Object properties)
 	{
 		ProcessDefinition definition = TUIKProcessEngine.getInstance().getProcessEngine().getRepositoryService()
 				.createProcessDefinitionQuery()
 				.processDefinitionKey(processDefinitionKey)
 				.latestVersion()
 				.singleResult();
-		
-		
+
+
 		return getFormService().submitStartFormData(definition.getId(), converter.formToMap(properties));
 	}
-	
-	
+
+
 	/**
 	 * @param processDefinitionId
 	 * @param converter
 	 * @param properties
 	 * @return
 	 */
-	public ProcessInstance submitStartFormDataByProcessId(String processDefinitionId, FormToMapConverter converter, Object properties)
+	public ProcessInstance submitStartFormDataByProcessId(String processDefinitionId, TUIKFormToMapConverterInterface converter, Object properties)
 	{
 		return getFormService().submitStartFormData(processDefinitionId, converter.formToMap(properties));
 	}
-	
-	
+
+
 	/**
 	 * @param taskId
 	 * @param converter
 	 * @param properties
 	 */
-	public void submitTaskFormData(String taskId, FormToMapConverter converter, Object properties)
+	public void submitTaskFormData(String taskId, TUIKFormToMapConverterInterface converter, Object properties)
 	{
 		getFormService().submitTaskFormData(taskId, converter.formToMap(properties));
 	}
 
-	
+
 	/**
 	 * @param taskId
 	 * @param converter
 	 * @param properties
 	 */
-	public void saveFormData(String taskId, FormToMapConverter converter, Object properties)
+	public void saveFormData(String taskId, TUIKFormToMapConverterInterface converter, Object properties)
 	{
 		getFormService().saveFormData(taskId, converter.formToMap(properties));
 	}
 
-	
+
 	/**
 	 * @param list
-	 * @param variables 
+	 * @param taskId
 	 * @return
 	 */
-	public List<?> renderProperties(List<FormProperty> list, Map<String, Object> variables)
+	public List<Object> renderProperties(List<FormProperty> list, String taskId) 
 	{
-		
-		List<Object> renderedForm= new ArrayList<Object>();
-		
-		if (list != null) {
-			for (FormProperty property : list) {
-				if (property.getType() instanceof ActivitiFormTypeInterface) {
-					ActivitiFormTypeInterface prop= (ActivitiFormTypeInterface) property.getType();
-					Object variable = null;
-					
-					if (variables != null && !variables.isEmpty() && prop.getVariable() != null) {
-						variable = variables.get(variable);
-						
-					}
-					renderedForm.add(prop.renderInput(property, variable != null ? variable.toString() : null));
-				}
-			}
-		}
-		return renderedForm;
+		return ((ProcessEngineImpl)TUIKProcessEngine.getInstance().getProcessEngine())
+				.getProcessEngineConfiguration()
+				.getCommandExecutor()
+				.execute(new TUIKFormValuesResolveCmd(list, taskId));
 	}
 
 }

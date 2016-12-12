@@ -11,19 +11,18 @@ public class ZKIntboxFormType extends AbstractIntboxFormType
 
 	private static final long serialVersionUID = 3868249214623992954L;
 
-	public DynamicModel renderInput(FormProperty property, String value) 
+	public DynamicModel renderInputForType(FormProperty property) 
 	{
 		Intbox component = new Intbox();
 		component= (Intbox) ZKInputUtils.getInstance().createHtmlBasedComponent(component, this);
 		
 		component.setFormat(super.getMap().get("format"));
 		
-		if (value != null) {
+		if (property.getValue() != null) {
 			try {
-				component.setValue(Integer.parseInt(value));
+				component.setValue(Integer.parseInt(property.getValue()));
 			} catch (Exception e) {
-				e.printStackTrace();
-				throw new TUIKProcessEngineException("Invalid integer value for input "+ property.getName() + ":" + value);
+				throw new TUIKProcessEngineException("Invalid integer value for input "+ property.getName() + ":" + property.getValue(), e);
 			} 
 		}
 		

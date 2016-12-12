@@ -2,10 +2,13 @@ package tr.gov.tuik.activitilib.types;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Map.Entry;
 
 import org.activiti.bpmn.model.FormProperty;
 import org.activiti.bpmn.model.FormValue;
 import org.activiti.engine.form.AbstractFormType;
+
+import tr.gov.tuik.activitilib.utils.TUIKELResolverInterface;
 
 public abstract class AbstractCommonFormType extends AbstractFormType implements ActivitiFormTypeInterface 
 {
@@ -15,7 +18,6 @@ public abstract class AbstractCommonFormType extends AbstractFormType implements
 	
 	private String variable;
 	
-	private String value;
 	private String id;	
 	private String label;
 	private String height;
@@ -62,6 +64,7 @@ public abstract class AbstractCommonFormType extends AbstractFormType implements
 	public AbstractFormType parseInput(FormProperty property) 
 	{
 		map = new HashMap<String,String>();
+		
 		for (FormValue fv : property.getFormValues()) {
 			map.put(fv.getId(), fv.getName());
 		}
@@ -152,12 +155,26 @@ public abstract class AbstractCommonFormType extends AbstractFormType implements
 		return serialVersionUID;
 	}
 
-	public String getValue() {
-		return value;
-	}
-
 	public Map<String, String> getMap() {
 		return map;
 	}
+
+	/* (non-Javadoc)
+	 * @see tr.gov.tuik.activitilib.types.ActivitiFormTypeInterface#renderInput(org.activiti.engine.form.FormProperty, tr.gov.tuik.activitilib.utils.TUIKELResolverInterface)
+	 */
+	public Object renderInput(org.activiti.engine.form.FormProperty property, TUIKELResolverInterface elResolver) 
+	{
+		if (elResolver != null) {
+			Map<String, String> resolvedMap = new HashMap<String, String>();
+			for (Entry<String, String> entry : map.entrySet()) {
+				resolvedMap.put(elResolver.resolve(entry.getKey()).toString(), elResolver.resolve(entry.getValue()).toString());
+			}
+			map= resolvedMap;
+		}
+		
+		return this.renderInputForType(property);
+	}
+	
+	public abstract Object renderInputForType(org.activiti.engine.form.FormProperty property);
 	
 }

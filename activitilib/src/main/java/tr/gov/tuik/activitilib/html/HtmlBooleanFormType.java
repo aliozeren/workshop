@@ -8,7 +8,8 @@ public class HtmlBooleanFormType extends AbstractPasswordFormType
 {
 	private static final long serialVersionUID = 3868249214623992954L;
 
-	public Object renderInput(FormProperty property, String value) {
+	public Object renderInputForType(FormProperty property) 
+	{
 		return "<input type='boolean'/>";
 	}
 }

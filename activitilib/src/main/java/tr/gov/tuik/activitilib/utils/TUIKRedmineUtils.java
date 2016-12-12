@@ -1,4 +1,4 @@
-package tr.gov.tuik.activitilib;
+package tr.gov.tuik.activitilib.utils;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -9,6 +9,8 @@ import java.util.List;
 import java.util.Properties;
 
 import org.apache.log4j.Logger;
+
+import tr.gov.tuik.activitilib.TUIKRedmineException;
 
 import com.taskadapter.redmineapi.Include;
 import com.taskadapter.redmineapi.IssueManager;
