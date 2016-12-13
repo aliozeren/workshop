@@ -16,11 +16,23 @@
 		<property name="formTypes">
 			<bean class="tr.gov.tuik.activitilib.zk.ZKCustomFormTypes" />
 		</property>
-		
+
 		<property name="customMybatisMappers">
-		  <set>
-		    <value>tr.gov.tuik.activitilib.utils.TUIKSqlMapper</value>
-		  </set>
+			<set>
+				<value>tr.gov.tuik.activitilib.utils.TUIKSqlMapper</value>
+			</set>
+		</property>
+
+		<property name="postBpmnParseHandlers">
+			<list>
+				<bean class="tr.gov.tuik.activitilib.listener.TUIKUserTaskBpmnParseHandler" >
+					<property name="customTaskListeners">
+					<list>
+						<value>tr.gov.tuik.activitilib.listener.MailTaskListener</value>
+					</list>
+					</property>
+				</bean>
+			</list>
 		</property>
 	</bean>
 

@@ -14,8 +14,8 @@ public class StartProcessApp
  //   	ProcessEngine engine = TUIKProcessEngine.getInstance().getProcessEngine();
     	
     	Map<String, Object> vars = new HashMap<String, Object>();
-    	vars.put("var1", "mehmet");
-    	vars.put("var2", "alio");
+    	vars.put("var1", "mustafa");
+    	vars.put("var2", "kemal");
     	TUIKProcessEngine.getInstance().startProcessInstance("eventTestProcess", vars);
     	
 //    	logger.info("Number of process instances: " + engine.getRuntimeService().createProcessInstanceQuery().count());

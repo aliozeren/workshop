@@ -2,7 +2,7 @@
 <definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="http://www.activiti.org/processdef">
   <process id="eventTestProcess" isExecutable="true">
     <startEvent id="sid-B61326F1-AA6D-48E9-824C-F6BB7B3C190D"></startEvent>
-    <userTask id="eventTestTask" name="eventTestTask">
+    <userTask id="eventTestTask" name="eventTestTask" activiti:assignee="${var1}">
       <extensionElements>
         <activiti:formProperty id="test" name="test" type="string" expression="${var1}">
           <activiti:value id="prop" name="${var2}"></activiti:value>
@@ -82,7 +82,7 @@
         <omgdi:waypoint x="380.0" y="310.0"></omgdi:waypoint>
         <omgdi:waypoint x="450.0" y="310.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="13.0" width="100.0" x="380.0" y="270.0"></omgdc:Bounds>
+          <omgdc:Bounds height="13.0" width="46.0" x="380.0" y="270.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="evetFlow" id="BPMNEdge_evetFlow">
@@ -90,7 +90,7 @@
         <omgdi:waypoint x="380.0" y="190.0"></omgdi:waypoint>
         <omgdi:waypoint x="450.0" y="190.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="13.0" width="100.0" x="380.0" y="230.0"></omgdc:Bounds>
+          <omgdc:Bounds height="13.0" width="43.0" x="380.0" y="230.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
