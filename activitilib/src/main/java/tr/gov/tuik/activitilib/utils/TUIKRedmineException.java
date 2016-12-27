@@ -1,4 +1,4 @@
-package tr.gov.tuik.activitilib;
+package tr.gov.tuik.activitilib.utils;
 
 
 public class TUIKRedmineException extends RuntimeException 

@@ -1,4 +1,4 @@
-package tr.gov.tuik.activitilib;
+package tr.gov.tuik.activitilib.samples;
 
 import org.apache.log4j.Logger;
 
@@ -12,7 +12,7 @@ public class TestRedmineApp
 
     public static void main( String[] args ) throws InterruptedException
     {
-    	Issue x = TUIKRedmineUtils.getInstance().getIssueById(861);
+    	Issue x = TUIKRedmineUtils.getInstance("tuiktest").getIssueById(861);
     	logger.info(x.getSubject());
     }
 }

@@ -29,21 +29,21 @@
   <bpmndi:BPMNDiagram id="BPMNDiagram_formPropTest">
     <bpmndi:BPMNPlane bpmnElement="formPropTest" id="BPMNPlane_formPropTest">
       <bpmndi:BPMNShape bpmnElement="sid-8FDBD4E5-B029-4268-987C-B0412750F459" id="BPMNShape_sid-8FDBD4E5-B029-4268-987C-B0412750F459">
-        <omgdc:Bounds height="35.0" width="35.0" x="160.0" y="200.0"></omgdc:Bounds>
+        <omgdc:Bounds height="35.0" width="35.0" x="161.0" y="159.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="sid-B22CC95C-10EC-49B7-A4C5-00DE75B5CFC2" id="BPMNShape_sid-B22CC95C-10EC-49B7-A4C5-00DE75B5CFC2">
-        <omgdc:Bounds height="80.0" width="100.0" x="300.0" y="178.0"></omgdc:Bounds>
+        <omgdc:Bounds height="80.0" width="100.0" x="301.0" y="137.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="sid-03D3FCD4-8515-40BF-BA5B-67B0C16A9BFB" id="BPMNShape_sid-03D3FCD4-8515-40BF-BA5B-67B0C16A9BFB">
-        <omgdc:Bounds height="35.0" width="35.0" x="500.0" y="200.0"></omgdc:Bounds>
+        <omgdc:Bounds height="35.0" width="35.0" x="501.0" y="159.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge bpmnElement="sid-BBD84DFF-C324-4705-B530-FDE919F25692" id="BPMNEdge_sid-BBD84DFF-C324-4705-B530-FDE919F25692">
-        <omgdi:waypoint x="195.0" y="217.0"></omgdi:waypoint>
-        <omgdi:waypoint x="300.0" y="218.0"></omgdi:waypoint>
+        <omgdi:waypoint x="196.0" y="176.0"></omgdi:waypoint>
+        <omgdi:waypoint x="301.0" y="177.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="sid-A19A221E-F30B-4FCA-B0A2-00526FFFB424" id="BPMNEdge_sid-A19A221E-F30B-4FCA-B0A2-00526FFFB424">
-        <omgdi:waypoint x="400.0" y="218.0"></omgdi:waypoint>
-        <omgdi:waypoint x="500.0" y="217.0"></omgdi:waypoint>
+        <omgdi:waypoint x="401.0" y="177.0"></omgdi:waypoint>
+        <omgdi:waypoint x="501.0" y="176.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>

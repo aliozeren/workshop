@@ -1,4 +1,4 @@
-package tr.gov.tuik.activitilib;
+package tr.gov.tuik.activitilib.samples;
 
 import java.util.HashMap;
 import java.util.List;
@@ -7,6 +7,8 @@ import java.util.Map;
 import org.activiti.engine.ProcessEngine;
 import org.activiti.engine.task.Task;
 import org.apache.log4j.Logger;
+
+import tr.gov.tuik.activitilib.TUIKProcessEngine;
 
 public class TestTimerApp 
 {

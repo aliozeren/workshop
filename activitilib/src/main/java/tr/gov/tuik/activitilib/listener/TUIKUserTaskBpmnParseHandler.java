@@ -13,6 +13,10 @@ import org.apache.log4j.Logger;
 import tr.gov.tuik.activitilib.TUIKProcessEngineException;
 import tr.gov.tuik.activitilib.utils.TUIKUtils;
 
+/**
+ * @author alio
+ *
+ */
 public class TUIKUserTaskBpmnParseHandler extends AbstractBpmnParseHandler<UserTask> 
 {
 

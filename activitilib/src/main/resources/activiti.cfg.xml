@@ -10,7 +10,7 @@
 		<property name="jdbcDriver" value="org.postgresql.Driver" />
 		<property name="databaseSchemaUpdate" value="true" />
 		<property name="jobExecutorActivate" value="false" />
-		<property name="mailServerHost" value="ali.ozeren@gmail.com" />
+		<property name="mailServerHost" value="info@tuik.gov.tr" />
 		<property name="mailServerPort" value="5025" />
 
 		<property name="formTypes">
@@ -35,5 +35,4 @@
 			</list>
 		</property>
 	</bean>
-
 </beans>

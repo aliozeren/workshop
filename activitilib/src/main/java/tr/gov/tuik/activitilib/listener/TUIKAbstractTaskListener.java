@@ -5,6 +5,11 @@ import java.util.Set;
 
 import org.activiti.engine.delegate.TaskListener;
 
+/**
+ * 
+ * @author alio
+ *
+ */
 public abstract class TUIKAbstractTaskListener implements TaskListener 
 {
 

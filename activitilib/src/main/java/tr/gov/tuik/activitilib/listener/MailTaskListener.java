@@ -8,6 +8,11 @@ import java.util.Set;
 import org.activiti.engine.delegate.DelegateTask;
 import org.activiti.engine.delegate.TaskListener;
 
+/**
+ * Sample Task listener 
+ * @author alio
+ *
+ */
 public class MailTaskListener extends TUIKAbstractTaskListener
 {
 
@@ -25,6 +30,7 @@ public class MailTaskListener extends TUIKAbstractTaskListener
 	
 	public void notify(DelegateTask delegateTask) 
 	{
+		
 		System.out.println("Sending mail to " + delegateTask.getAssignee());
 	}
 

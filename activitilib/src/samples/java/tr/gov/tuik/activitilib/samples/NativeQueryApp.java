@@ -1,9 +1,11 @@
-package tr.gov.tuik.activitilib;
+package tr.gov.tuik.activitilib.samples;
 
 import org.activiti.engine.ProcessEngine;
 import org.activiti.engine.impl.persistence.entity.VariableInstanceEntity;
 import org.activiti.engine.runtime.Execution;
 import org.apache.log4j.Logger;
+
+import tr.gov.tuik.activitilib.TUIKProcessEngine;
 
 public class NativeQueryApp 
 {

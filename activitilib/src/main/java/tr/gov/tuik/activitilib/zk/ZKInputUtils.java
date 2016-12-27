@@ -54,14 +54,14 @@ public class ZKInputUtils implements TUIKFormToMapConverterInterface
 	public DynamicModel getDynamicModel(AbstractCommonFormType input,  Component component, boolean addLabel)
 	{	
 		Label label= null;
-		
+
 		if (addLabel) {
 			label= new Label(input.getLabel()); 
 			label.setId("label_" + input.getId());
 		}
-		
+
 		return  new DynamicModel(label, component);
-		
+
 	}
 
 	/**
@@ -108,13 +108,11 @@ public class ZKInputUtils implements TUIKFormToMapConverterInterface
 		Map<String, String> map = new HashMap<String, String>();
 		for (DynamicModel model : list) {
 			Component component = model.getComponent();
-			
+
 			if (component == null) {
 				continue;
 			}
-			
-			
-			
+
 			if (component instanceof Combobox) {
 				if (((Combobox) component).getSelectedItem() != null) {
 					map.put(component.getId(), ((Combobox) component).getSelectedItem().getValue().toString());
@@ -125,7 +123,7 @@ public class ZKInputUtils implements TUIKFormToMapConverterInterface
 				} else {
 					map.put(component.getId(), "false");
 				}
-				
+
 			} // InputElement condition must be the last condition
 			else if (component instanceof InputElement) { 
 				map.put(component.getId(), ((InputElement) component).getText());

@@ -1,4 +1,4 @@
-package tr.gov.tuik.activitilib;
+package tr.gov.tuik.activitilib.samples;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -7,6 +7,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.log4j.Logger;
+
+import tr.gov.tuik.activitilib.TUIKProcessEngine;
 
 public class GetDiagramForProcessInstanceApp 
 {
@@ -21,7 +23,7 @@ public class GetDiagramForProcessInstanceApp
     	List<String> list = new ArrayList<String>();
     	list.add("107508");
     	
-    	TUIKProcessEngine.getInstance().getProcessDiagramForInstanceWithMapAll("105001",f, "evet", null);
+    	TUIKProcessEngine.getInstance().getProcessDiagramForInstanceWithMapAll("310001",f, "ali", null);
 
     	f.close();
     	
