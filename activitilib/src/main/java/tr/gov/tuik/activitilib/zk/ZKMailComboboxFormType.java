@@ -1,7 +1,7 @@
 package tr.gov.tuik.activitilib.zk;
 
 import org.activiti.engine.form.FormProperty;
-import org.zkoss.zul.Combobox;
+import org.zkoss.zul.Div;
 
 import tr.gov.tuik.activitilib.TUIKConstants;
 import tr.gov.tuik.activitilib.types.AbstractComboboxFormType;
@@ -18,21 +18,17 @@ public class ZKMailComboboxFormType extends AbstractComboboxFormType
 
 	public DynamicModel renderInputForType(FormProperty property) 
 	{
-		Combobox component = new Combobox();
-		component= (Combobox) ZKInputUtils.getInstance().createHtmlBasedComponent(component, this);
+		Div component = new Div();
+		component= (Div) ZKInputUtils.getInstance().createHtmlBasedComponent(component, this);
 
 		component.setAttribute(TUIKConstants.COMBOBOX_TYPE_IDENTIFIER,ZKMailComboboxFormType.NAME);
 		component.setAttribute(ZKMailComboboxFormType.GROUP_PROPERTY, super.getMap().get(ZKMailComboboxFormType.GROUP_PROPERTY));
-		
+		component.setAttribute(TUIKConstants.LABEL, super.getLabel());
 
-		if (property.getValue() != null) {
-			component.setValue(property.getValue());
-		}		
-		
 		return  ZKInputUtils.getInstance().getDynamicModel(this, component);
 	}
 
-	
+
 	@Override
 	public String getName() 
 	{

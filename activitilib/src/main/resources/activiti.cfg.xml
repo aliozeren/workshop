@@ -10,8 +10,11 @@
 		<property name="jdbcDriver" value="org.postgresql.Driver" />
 		<property name="databaseSchemaUpdate" value="true" />
 		<property name="jobExecutorActivate" value="false" />
-		<property name="mailServerHost" value="info@tuik.gov.tr" />
-		<property name="mailServerPort" value="5025" />
+
+		<property name="mailServerHost" value="ali.ozeren@gmail.com" /> <!-- TÜİK Mail Host Name -->
+		<property name="mailServerPort" value="5025" /> 				<!-- SMPT için 25 -->
+		<property name="mailServerUsername" value="USERNAME" />
+		<property name="mailServerPassword" value="PASSWORD" />
 
 		<property name="formTypes">
 			<bean class="tr.gov.tuik.activitilib.zk.ZKCustomFormTypes" />
@@ -35,4 +38,5 @@
 			</list>
 		</property>
 	</bean>
+
 </beans>
