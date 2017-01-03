@@ -77,7 +77,7 @@
 		<dependency>
 			<groupId>com.taskadapter</groupId>
 			<artifactId>redmine-java-api</artifactId>
-			<version>2.2.0</version>
+			<version>3.0.0</version>
 		</dependency>
 
 		<!-- http://mavensync.zkoss.org/maven2 -->
