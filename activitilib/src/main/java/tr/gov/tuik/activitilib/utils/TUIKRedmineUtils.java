@@ -23,12 +23,14 @@ import com.taskadapter.redmineapi.RedmineManager;
 import com.taskadapter.redmineapi.RedmineManagerFactory;
 import com.taskadapter.redmineapi.bean.Attachment;
 import com.taskadapter.redmineapi.bean.CustomField;
+import com.taskadapter.redmineapi.bean.CustomFieldDefinition;
 import com.taskadapter.redmineapi.bean.CustomFieldFactory;
 import com.taskadapter.redmineapi.bean.Issue;
 import com.taskadapter.redmineapi.bean.IssueFactory;
 import com.taskadapter.redmineapi.bean.Journal;
 import com.taskadapter.redmineapi.bean.JournalDetail;
 import com.taskadapter.redmineapi.bean.Project;
+import com.taskadapter.redmineapi.bean.Tracker;
 
 public class TUIKRedmineUtils 
 {
@@ -218,6 +220,35 @@ public class TUIKRedmineUtils
 		return CustomFieldFactory.create(id, name, value);
 	}
 	
+	public List<CustomFieldDefinition> getCustomFields() 
+	{
+		try 
+		{
+			return redmineManager.getCustomFieldManager().getCustomFieldDefinitions();
+		} catch (RedmineException e) 
+		{
+			e.printStackTrace();
+			throw new TUIKRedmineException(e);
+		}
+	}
+
+	public RedmineManager getRedmineManager() 
+	{
+		return redmineManager;
+	}
+
+	public Collection<Tracker> getTrackers() 
+	{
+		try 
+		{
+			return redmineManager.getProjectManager().getProjectByKey(projectKey).getTrackers();
+		} catch (RedmineException e) 
+		{
+			e.printStackTrace();
+			throw new TUIKRedmineException(e);
+		}
+	}
+
 	public Collection<CustomField> getAllCustomFields(int id)
 	{
 		Collection<CustomField> list = null;
