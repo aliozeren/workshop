@@ -11,6 +11,7 @@ import tr.gov.tuik.activitilib.types.AbstractFileFormType;
 import tr.gov.tuik.activitilib.types.AbstractIntboxFormType;
 import tr.gov.tuik.activitilib.types.AbstractPasswordFormType;
 import tr.gov.tuik.activitilib.types.AbstractProcessFormType;
+import tr.gov.tuik.activitilib.types.AbstractRedmineFormType;
 import tr.gov.tuik.activitilib.types.AbstractTextareaFormType;
 import tr.gov.tuik.activitilib.types.AbstractTextboxFormType;
 import tr.gov.tuik.activitilib.types.ActivitiFormTypeInterface;
@@ -43,6 +44,7 @@ public class ZKFormTypeFactory implements FormTypeFactoryInterface
 		formTypes.put(ZKStaffComboboxFormType.NAME, ZKStaffComboboxFormType.class);
 		formTypes.put(ZKMailComboboxFormType.NAME, ZKMailComboboxFormType.class);
 		formTypes.put(AbstractProcessFormType.NAME, ZKProcessFormType.class);
+		formTypes.put(AbstractRedmineFormType.NAME, ZKRedmineFormType.class);
 	}
 	
 	public ActivitiFormTypeInterface getFormTypeInstance(String name)
