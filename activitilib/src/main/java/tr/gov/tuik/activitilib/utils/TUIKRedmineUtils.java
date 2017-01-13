@@ -3,6 +3,7 @@ package tr.gov.tuik.activitilib.utils;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.Collection;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -29,8 +30,10 @@ import com.taskadapter.redmineapi.bean.Issue;
 import com.taskadapter.redmineapi.bean.IssueFactory;
 import com.taskadapter.redmineapi.bean.Journal;
 import com.taskadapter.redmineapi.bean.JournalDetail;
+import com.taskadapter.redmineapi.bean.Membership;
 import com.taskadapter.redmineapi.bean.Project;
 import com.taskadapter.redmineapi.bean.Tracker;
+import com.taskadapter.redmineapi.bean.User;
 
 public class TUIKRedmineUtils 
 {
@@ -298,7 +301,39 @@ public class TUIKRedmineUtils
 		}
 		return list;
 	}
+	
+	/**
+	 * gets the assigned list by projectKey
+	 * 
+	 * @return
+	 * 
+	 */
+	public List<User> getAssignedList() {
+		List<User> listUser = new ArrayList<>();
 
+		try {
+			List<Membership> member = redmineManager.getMembershipManager().getMemberships(projectKey);
+
+			for (Membership membership : member) {
+
+				if (membership.getUserId() != null)
+					listUser.add(redmineManager.getUserManager().getUserById(membership.getUserId()));
+				else if (membership.getGroupId() != null) {
+					User user = new User(membership.getGroupId());
+					user.setFirstName(membership.getGroupName());
+					user.setLastName("");
+					user.setFullName(membership.getGroupName());
+					listUser.add(user);
+				}
+			}
+
+		} catch (Exception e) {
+			TUIKUtils.getInstance().logError(logger, e);
+			throw new TUIKRedmineException("Error in assigned list", e);
+		}
+
+		return listUser;
+	}
 	/**
 	 * Gets the journal details 
 	 * @param issueId
