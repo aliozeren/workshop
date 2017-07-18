@@ -16,6 +16,7 @@ import tr.gov.tuik.activitilib.utils.TUIKFormToMapConverterInterface;
 import tr.gov.tuik.activitilib.utils.TUIKFormValuesResolveCmd;
 
 /**
+ * The class is defined in order to simplfy the usage of the form services in activiti process engine.
  * @author alio
  *
  */
@@ -28,6 +29,10 @@ public class TUIKFormService
 	private TUIKFormService() {
 	}
 
+	/**
+	 * 
+	 * Returns the singleton instance of the class
+	 */
 	public static TUIKFormService getInstance() 
 	{
 		if (instance == null) {
@@ -37,11 +42,17 @@ public class TUIKFormService
 		return instance;
 	}
 
+	/**
+	 * Returns the activiti process engine
+	 */
 	private ProcessEngine getProcessEngine()
 	{
 		return TUIKProcessEngine.getInstance().getProcessEngine();
 	}
 
+	/**
+	 * Returns the activiti form service
+	 */
 	public FormService getFormService() 
 	{
 		return getProcessEngine().getFormService();
@@ -49,6 +60,7 @@ public class TUIKFormService
 
 
 	/**
+	 * Returns the form definition of the task with the given id
 	 * @param taskId
 	 * @return
 	 */
@@ -58,6 +70,7 @@ public class TUIKFormService
 	}
 
 	/**
+	 * Returns the rendered form of the task with the given id.
 	 * @param taskId
 	 * @return
 	 */
@@ -72,6 +85,7 @@ public class TUIKFormService
 	}
 
 	/**
+	 * Returns the form definition of the start task of the given process
 	 * @param processDefinitionKey
 	 * @return
 	 */
@@ -87,6 +101,7 @@ public class TUIKFormService
 	}
 
 	/**
+	 * Returns the form definition of the start task of the given process
 	 * @param processDefinitionId
 	 * @return
 	 */
@@ -96,6 +111,7 @@ public class TUIKFormService
 	}
 
 	/**
+	 * Returns the rendered form of the start task of the given process
 	 * @param processDefinitionKey
 	 * @return
 	 */
@@ -114,6 +130,7 @@ public class TUIKFormService
 	}
 
 	/**
+	 * Returns the rendered form of the start task of the given process
 	 * @param processDefinitionId
 	 * @return
 	 */
@@ -126,9 +143,10 @@ public class TUIKFormService
 	}	
 
 	/**
+	 * Starts the process by submitting the start form data
 	 * @param processDefinitionKey
-	 * @param converter
-	 * @param properties
+	 * @param converter - converts the form data object properties to the activiti variable map type (Map<String, String>)
+	 * @param properties 
 	 * @return
 	 */
 	public ProcessInstance submitStartFormData(String processDefinitionKey, TUIKFormToMapConverterInterface converter, Object properties)
@@ -145,9 +163,10 @@ public class TUIKFormService
 
 
 	/**
+	 * Starts the process by submitting the start form data
 	 * @param processDefinitionId
-	 * @param converter
-	 * @param properties
+	 * @param converter - converts the form data object properties to the activiti variable map type (Map<String, String>)
+	 * @param properties 
 	 * @return
 	 */
 	public ProcessInstance submitStartFormDataByProcessId(String processDefinitionId, TUIKFormToMapConverterInterface converter, Object properties)
@@ -157,8 +176,9 @@ public class TUIKFormService
 
 
 	/**
+	 * Submits and completes the task
 	 * @param taskId
-	 * @param converter
+	 * @param converter - converts the form data object properties to the activiti variable map type (Map<String, String>)
 	 * @param properties
 	 */
 	public void submitTaskFormData(String taskId, TUIKFormToMapConverterInterface converter, Object properties)
@@ -168,8 +188,9 @@ public class TUIKFormService
 
 
 	/**
+	 * Saves the task (not complete)
 	 * @param taskId
-	 * @param converter
+	 * @param converter - converts the form data object properties to the activiti variable map type (Map<String, String>)
 	 * @param properties
 	 */
 	public void saveFormData(String taskId, TUIKFormToMapConverterInterface converter, Object properties)
@@ -179,6 +200,7 @@ public class TUIKFormService
 
 
 	/**
+	 * Renderes the form properties (inputs) in the given task instance
 	 * @param list
 	 * @param taskId
 	 * @return

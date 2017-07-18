@@ -28,29 +28,25 @@ public class TestTimerApp
     	logger.info("Number of process instances: " + engine.getRuntimeService().createProcessInstanceQuery().count());
     	
     	Thread.sleep(30000L);
-    	
-    	logger.debug("First try");
 
     	List<Task> tasks = TUIKProcessEngine.getInstance().getUserTasks("kermit");
 
     	for (Task t : tasks) {
-    		logger.debug("Task ID:" + t.getId() + ", Task Name:" + t.getName());
+    		logger.info("Task ID:" + t.getId() + ", Task Name:" + t.getName());
     	}
 
-    	logger.debug("First try end");
+    	logger.info("First task query...");
     	
-    	Thread.sleep(30000L);
+    	Thread.sleep(50000L);
     	
-    	logger.debug("Second try");
+    	logger.info("Second task query...");
 
     	tasks = TUIKProcessEngine.getInstance().getUserTasks("kermit");
 
     	for (Task t : tasks) {
-    		logger.debug("Task ID:" + t.getId() + ", Task Name:" + t.getName());
+    		logger.info("Task ID:" + t.getId() + ", Task Name:" + t.getName());
     	}
     	
-    	logger.debug("Second try end");
-
     	TUIKProcessEngine.destroy();
 	}
 }

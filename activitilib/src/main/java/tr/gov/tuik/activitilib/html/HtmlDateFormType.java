@@ -11,8 +11,21 @@ public class HtmlDateFormType extends AbstractDateFormType
 
 
 	public Object renderInputForType(FormProperty property) {
-		return "<input type='date'/>";
+		StringBuffer str = new StringBuffer("<input type='date' ");
+		str.append(" id='")
+			.append(super.getId())
+			.append("' name='")
+			.append(super.getId())
+			.append("' ");
+		
+		if (property.getValue() != null) {
+			str.append(" value='").append(property.getValue()).append("' ");
+		}
+		
+		str.append(HTMLInputUtils.getInstance().prepareAttributes(super.getMap()));
+		
+		str.append(" />");
+		
+		return HTMLInputUtils.getInstance().createStandartInputDiv(super.getLabel(), str.toString());
 	}
-
-
 }

@@ -14,23 +14,12 @@ public class StartProcessApp
 
     public static void main( String[] args )
     {
- //   	ProcessEngine engine = TUIKProcessEngine.getInstance().getProcessEngine();
-    	
     	Map<String, Object> vars = new HashMap<String, Object>();
-    	vars.put("var1", "mustafa");
-    	vars.put("var2", "kemal");
-    	ProcessInstance x = TUIKProcessEngine.getInstance().startProcessInstance("testRedirect", vars);
+    	vars.put("goBack", "1");
+    	ProcessInstance x = TUIKProcessEngine.getInstance().startProcessInstance("testRedirect_2", vars);
     	
     	System.out.println(x.getProcessInstanceId());
     	
-//    	logger.info("Number of process instances: " + engine.getRuntimeService().createProcessInstanceQuery().count());
-//    	
-//    	List<Execution> processes = engine.getRuntimeService().createExecutionQuery().orderByProcessInstanceId().desc().list();
-//    	
-//    	for (Execution p : processes) {
-//    		System.out.println(p.getId());
-//    		engine.getRuntimeService().signal(p.getId());
-//    	}
     	TUIKProcessEngine.destroy();
     }
 }

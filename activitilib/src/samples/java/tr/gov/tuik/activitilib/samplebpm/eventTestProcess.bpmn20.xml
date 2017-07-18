@@ -31,6 +31,16 @@
     <sequenceFlow id="evetFlow" name="evetFlow" sourceRef="checkCondition" targetRef="EvetTask">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${"E".equals(degisken)}]]></conditionExpression>
     </sequenceFlow>
+    <serviceTask id="servicetask1" name="Service Task">
+      <extensionElements>
+        <activiti:field name="redirectTo">
+          <activiti:string><![CDATA[eventTaskTask]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="redirectCondition">
+          <activiti:expression><![CDATA[${redirect == 'Y'}]]></activiti:expression>
+        </activiti:field>
+      </extensionElements>
+    </serviceTask>
   </process>
   <bpmndi:BPMNDiagram id="BPMNDiagram_eventTestProcess">
     <bpmndi:BPMNPlane bpmnElement="eventTestProcess" id="BPMNPlane_eventTestProcess">
@@ -54,6 +64,9 @@
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="sid-E71F4B0D-BBA6-455F-AC27-E39BD1A42FAD" id="BPMNShape_sid-E71F4B0D-BBA6-455F-AC27-E39BD1A42FAD">
         <omgdc:Bounds height="40.0" width="40.0" x="630.0" y="230.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="servicetask1" id="BPMNShape_servicetask1">
+        <omgdc:Bounds height="55.0" width="105.0" x="590.0" y="90.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge bpmnElement="sid-4FCB5C50-92ED-461C-931B-5B29856BDB98" id="BPMNEdge_sid-4FCB5C50-92ED-461C-931B-5B29856BDB98">
         <omgdi:waypoint x="80.0" y="252.0"></omgdi:waypoint>

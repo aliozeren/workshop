@@ -3,6 +3,7 @@
 	<name>activitilib</name>
 	<comment></comment>
 	<projects>
+		<project>tuiklib-demo</project>
 	</projects>
 	<buildSpec>
 		<buildCommand>

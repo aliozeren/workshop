@@ -5,6 +5,7 @@ import java.util.Map;
 
 import org.apache.log4j.Logger;
 
+import tr.gov.tuik.activitilib.types.AbstractCheckboxFormType;
 import tr.gov.tuik.activitilib.types.AbstractComboboxFormType;
 import tr.gov.tuik.activitilib.types.AbstractDateFormType;
 import tr.gov.tuik.activitilib.types.AbstractIntboxFormType;
@@ -23,11 +24,18 @@ public class HtmlFormTypeFactory implements FormTypeFactoryInterface
 	private static final Map<String, Class<?>> formTypes;
 	static {
 		formTypes= new HashMap<String, Class<?>>();
+		// activiti-explorer form types
+		formTypes.put("boolean", HtmlBooleanFormType.class);
+		formTypes.put("enum", HtmlEnumFormType.class);
+		formTypes.put("string", HtmlStringFormType.class);
+		formTypes.put("long", HtmlLongFormType.class);
+		
 		formTypes.put(AbstractComboboxFormType.NAME, HtmlEnumFormType.class);
 		formTypes.put(AbstractIntboxFormType.NAME, HtmlLongFormType.class);
 		formTypes.put(AbstractTextboxFormType.NAME, HtmlStringFormType.class);
 		formTypes.put(AbstractDateFormType.NAME, HtmlDateFormType.class);
 		formTypes.put(AbstractPasswordFormType.NAME, HtmlBooleanFormType.class);
+		formTypes.put(AbstractCheckboxFormType.NAME, HtmlCheckboxFormType.class);
 	}
 	
 	public ActivitiFormTypeInterface getFormTypeInstance(String name)

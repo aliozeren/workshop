@@ -43,6 +43,11 @@ import org.apache.log4j.Logger;
 
 import tr.gov.tuik.activitilib.utils.TUIKUtils;
 
+/**
+ * This class is developed in order to simplify the usage of the activiti-engine library. 
+ * @author alio
+ *
+ */
 public class TUIKProcessEngine 
 {
 
@@ -56,10 +61,14 @@ public class TUIKProcessEngine
 	private TUIKProcessEngine() {
 	}
 
+	/**
+	 * The function returns the instance of the singleton class. Configuration and static
+	 * objects are created within the instance. 
+	 * @return
+	 */
 	public static TUIKProcessEngine getInstance() 
 	{
 		if (instance == null) {
-
 			instance= new TUIKProcessEngine();
 			ProcessEngines.init();
 			pec = ProcessEngineConfiguration.createProcessEngineConfigurationFromResourceDefault();
@@ -71,6 +80,9 @@ public class TUIKProcessEngine
 		return instance;
 	}
 
+	/**
+	 * The method destroys the configured process engine and the instance
+	 */
 	public static void destroy() 
 	{
 		if (instance != null) {
@@ -80,6 +92,9 @@ public class TUIKProcessEngine
 		}
 	}
 
+	/**
+	 * @return the activiti process engine
+	 */
 	public ProcessEngine getProcessEngine() 
 	{
 		return TUIKProcessEngine.processEngine;
@@ -112,9 +127,10 @@ public class TUIKProcessEngine
 
 
 	/**
-	 * @param name
-	 * @param resourceName
-	 * @param inputStream
+	 * The function deploys BPMN2.0 model to activiti engine
+	 * @param name - name of the process model
+	 * @param resourceName - name of the resource 
+	 * @param inputStream - inputstream of the model definition
 	 */
 	public String deployModel(String name, String resourceName, String inputStream) 
 	{
@@ -222,7 +238,7 @@ public class TUIKProcessEngine
 	}
 
 	/**
-	 * 
+	 * claims and completes the task with the given username and id by setting the given global variables 
 	 * @param taskId
 	 * @param variables
 	 * @param claim
@@ -234,7 +250,7 @@ public class TUIKProcessEngine
 	}
 
 	/**
-	 * 
+	 * completes the task with the given id by setting the given local and global variables
 	 * @param taskId
 	 * @param variables
 	 * @param localVariables
@@ -245,7 +261,7 @@ public class TUIKProcessEngine
 	}
 
 	/**
-	 * 
+	 * completes the task with the given id by setting the given global variables
 	 * @param taskId
 	 * @param variables
 	 */
@@ -255,7 +271,7 @@ public class TUIKProcessEngine
 	}
 
 	/**
-	 * 
+	 * completes the task with the given task Id
 	 * @param taskId
 	 */
 	public void completeTask(String taskId) 
@@ -265,6 +281,7 @@ public class TUIKProcessEngine
 
 
 	/**
+	 * completes first matching the task with the given processKey and query variables by setting the given global variables 
 	 * @param processKey
 	 * @param queryVariables
 	 * @param completeVariables
@@ -290,6 +307,7 @@ public class TUIKProcessEngine
 	}
 
 	/**
+	 * claims the task with the given user
 	 * 
 	 * @param taskId
 	 * @param claimUsername
@@ -439,22 +457,50 @@ public class TUIKProcessEngine
 		return lp;
 			}
 
+	/**
+	 * Queries active processes by process key with the following criteria.
+	 * None of the criteria are required.
+	 * @param username	 - use if query for a specific user
+	 * @param beginDate  - use if processes started after a date
+	 * @param endDate	 - use if processes started before a date
+	 */
 	public List<HistoricProcessInstance> queryAllActiveProcessesByInvolvedUser(String username,Date beginDate,Date endDate) 
 	{
 		return queryProcesses(null, true, false,username,beginDate,endDate);
 	}
 
+	/**
+	 * Queries the finished processes by process key with the following criteria.
+	 * None of the criteria are required.
+	 * @param username	 - use if query for a specific user
+	 * @param beginDate  - use if processes started after a date
+	 * @param endDate	 - use if processes started before a date
+	 * @return
+	 */
 	public List<HistoricProcessInstance> queryAllFinishedProcessesByInvolvedUser(String username,Date beginDate,Date endDate) 
 	{
 		return queryProcesses(null, false, true,username,beginDate,endDate);
 	}		
 
+	/**
+	 * Queries the processes by process key with the following criteria.
+	 * None of the criteria are required.
+	 * @param username	 - use if query for a specific user
+	 * @param beginDate  - use if processes started after a date
+	 * @param endDate	 - use if processes started before a date
+	 * @return
+	 */
 	public List<HistoricProcessInstance> queryAllProcessesByInvolvedUser(String username,Date beginDate,Date endDate) 
 	{
 		return queryProcesses(null, false, false,username,beginDate,endDate);
 	}
 
 
+	/**
+	 * Queries finished processes with the given process id
+	 * @param processId
+	 * @return
+	 */
 	public List<HistoricTaskInstance> queryProcessesTaskInstances(String processId)
 	{
 		return pec.getHistoryService().createHistoricTaskInstanceQuery()
@@ -620,6 +666,7 @@ public class TUIKProcessEngine
 	}	
 
 	/**
+	 * Finds and returns the task which the user or the groups are invoved
 	 * @param username
 	 * @param groups
 	 * @return
@@ -646,6 +693,7 @@ public class TUIKProcessEngine
 	}
 
 	/**
+	 * Finds and returns the ids of tasks which the user or the groups are invoved
 	 * @param username
 	 * @param groups
 	 * @return
@@ -830,6 +878,13 @@ public class TUIKProcessEngine
 		return getProcessInstance(processKey, variables) == null ? false : true;
 	}
 
+	/**
+	 * Get the tasks with variables 
+	 * @param processDefinitionKey - process definition key (id)
+	 * @param taskDefinitionKey - task definition key (id)
+	 * @param variables	- variables equals to (name & value pair - optional)
+	 * @return
+	 */
 	public Task getTaskWithVariables(String processDefinitionKey, String taskDefinitionKey, Map<String, Object> variables) 
 	{
 		return getTaskWithVariables(processDefinitionKey, taskDefinitionKey, variables, null, null);

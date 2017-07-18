@@ -19,7 +19,12 @@
     </startEvent>
     <userTask id="sid-B22CC95C-10EC-49B7-A4C5-00DE75B5CFC2">
       <extensionElements>
-        <activiti:formProperty id="boolProp" name="Boolean Property" type="checkbox"></activiti:formProperty>
+        <activiti:formProperty id="boolProp" name="Boolean Property" type="checkbox">
+          <activiti:value id="checkedValue" name="E"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="personel" name="personel" type="staff">
+          <activiti:value id="department" name="0770300"></activiti:value>
+        </activiti:formProperty>
       </extensionElements>
     </userTask>
     <sequenceFlow id="sid-BBD84DFF-C324-4705-B530-FDE919F25692" sourceRef="sid-8FDBD4E5-B029-4268-987C-B0412750F459" targetRef="sid-B22CC95C-10EC-49B7-A4C5-00DE75B5CFC2"></sequenceFlow>

@@ -11,7 +11,7 @@
 		<property name="databaseSchemaUpdate" value="true" />
 		<property name="jobExecutorActivate" value="false" />
 
-		<property name="mailServerHost" value="ali.ozeren@gmail.com" /> <!-- TÜİK Mail Host Name -->
+		<property name="mailServerHost" value="mail.tuik.gov.tr" /> <!-- TÜİK Mail Host Name -->
 		<property name="mailServerPort" value="5025" /> 				<!-- SMPT için 25 -->
 		<property name="mailServerUsername" value="USERNAME" />
 		<property name="mailServerPassword" value="PASSWORD" />
@@ -33,6 +33,17 @@
 					<list>
 						<value>tr.gov.tuik.activitilib.listener.MailTaskListener</value>
 					</list>
+					</property>
+				</bean>
+				<bean class="tr.gov.tuik.activitilib.listener.TUIKServiceTaskBpmnParseHandler" >
+					<property name="serviceTaskName">
+						<value>tr.gov.tuik.activitilib.servicetask.TUIKRedirectServiceTask</value>
+					</property>
+					<property name="taskFieldName">
+						<value>redirectTo</value>
+					</property>
+					<property name="conditionFieldName">
+						<value>redirectCondition</value>
 					</property>
 				</bean>
 			</list>

@@ -11,7 +11,25 @@ public class HtmlStringFormType extends AbstractTextboxFormType
 
 	public String renderInputForType(FormProperty property) 
 	{
-		return "<input type='string'/>";
+		StringBuffer str = new StringBuffer("<input type='text' ");
+		
+		str.append(" id='")
+			.append(super.getId())
+			.append("' name='")
+			.append(super.getId())
+			.append("' ");
+		
+		
+		if (property.getValue() != null) {
+			str.append(" value='").append(property.getValue()).append("' ");
+		}
+		
+		str.append(HTMLInputUtils.getInstance().prepareAttributes(super.getMap()));
+
+		str.append(" />");
+		
+
+		return HTMLInputUtils.getInstance().createStandartInputDiv(super.getLabel(), str.toString());
 	}
 
 }

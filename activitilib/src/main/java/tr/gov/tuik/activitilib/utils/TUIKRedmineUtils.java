@@ -33,6 +33,7 @@ import com.taskadapter.redmineapi.bean.JournalDetail;
 import com.taskadapter.redmineapi.bean.Membership;
 import com.taskadapter.redmineapi.bean.Project;
 import com.taskadapter.redmineapi.bean.Tracker;
+import com.taskadapter.redmineapi.bean.TrackerFactory;
 import com.taskadapter.redmineapi.bean.User;
 
 public class TUIKRedmineUtils 
@@ -187,7 +188,7 @@ public class TUIKRedmineUtils
 	public Issue createIssue(String subject) 
 	{
 		try {
-			Issue issue = IssueFactory.create(project.getId(), subject); 
+			Issue issue = IssueFactory.create( project.getId(), subject);
 			return issue;
 
 		} catch (Exception e) {
@@ -203,6 +204,7 @@ public class TUIKRedmineUtils
 	public void deleteIssue(String issueId)
 	{
 		IssueManager issueManager = redmineManager.getIssueManager();
+		
 		try{
 			issueManager.deleteIssue(new Integer(issueId));
 		}catch(RedmineException e){
@@ -245,6 +247,7 @@ public class TUIKRedmineUtils
 		try 
 		{
 			return redmineManager.getProjectManager().getProjectByKey(projectKey).getTrackers();
+			
 		} catch (RedmineException e) 
 		{
 			e.printStackTrace();
