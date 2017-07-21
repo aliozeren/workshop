@@ -7,11 +7,14 @@
           <activiti:value id="options" name="[['0','Hayır'],['1','Evet']]"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="kime" name="Kime Atanacak" type="textbox" variable="kime"></activiti:formProperty>
+        <activiti:formProperty id="nextInputStyle" name="Sonraki Alan Stili" type="string"></activiti:formProperty>
       </extensionElements>
     </startEvent>
-    <userTask id="firstTask" name="first task" activiti:assignee="$(kime}">
+    <userTask id="firstTask" name="first task" activiti:assignee="${kime}">
       <extensionElements>
-        <activiti:formProperty id="kime" name="Kime Atansın" type="textbox" variable="kime"></activiti:formProperty>
+        <activiti:formProperty id="kime" name="Kime Atansın" type="textbox" variable="kime">
+          <activiti:value id="style" name="${nextInputStyle}"></activiti:value>
+        </activiti:formProperty>
       </extensionElements>
     </userTask>
     <sequenceFlow id="sid-5224F24D-AD42-4F8C-A408-4C0DF1FFED97" sourceRef="sid-A17667FE-CCE7-4275-8CDE-1B8F71312BF7" targetRef="firstTask"></sequenceFlow>

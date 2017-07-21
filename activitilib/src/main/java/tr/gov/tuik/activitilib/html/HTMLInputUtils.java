@@ -4,6 +4,7 @@ import java.util.Map;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
+import org.apache.commons.lang3.StringEscapeUtils;
 import org.apache.commons.lang3.StringUtils;
 
 
@@ -75,7 +76,7 @@ public class HTMLInputUtils
 										return true;
 									}
 								 })
-								.map(e -> e.getKey()+"='"+ e.getValue() + "' ")
+								.map(e -> e.getKey()+"='"+ StringUtils.replace(e.getValue(),"'","\'") + "' ")
 								.collect(Collectors.joining(" "));
 	}
 }

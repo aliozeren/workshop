@@ -31,6 +31,7 @@ import org.activiti.engine.history.HistoricProcessInstanceQuery;
 import org.activiti.engine.history.HistoricTaskInstance;
 import org.activiti.engine.impl.identity.Authentication;
 import org.activiti.engine.repository.Deployment;
+import org.activiti.engine.repository.DeploymentQuery;
 import org.activiti.engine.repository.ProcessDefinition;
 import org.activiti.engine.runtime.ProcessInstance;
 import org.activiti.engine.runtime.ProcessInstanceQuery;
@@ -764,6 +765,44 @@ public class TUIKProcessEngine
 	
 	
 	/**
+	 * deletes the processes with deployment key
+	 * @param processKey
+	 */
+	public void deleteProcessDeploymentWithProcessKey(String processKey) {
+		if (TUIKUtils.getInstance().isEmpty(processKey)) {
+			throw new TUIKProcessEngineException("Process key cannot be empty!");
+		}
+		try {
+			DeploymentQuery processQuery = getProcessEngine().getRepositoryService().createDeploymentQuery().processDefinitionKey(processKey);
+			List<Deployment> deployments = processQuery.list();
+			
+			for (Deployment d : deployments) {
+				deleteProcessDeploymentsById(d.getId());
+			}
+			
+		} catch (Exception e) {
+			logger.error(e.getMessage());
+			throw new TUIKProcessEngineException(e);
+		}
+	}
+
+	/**
+	 * deletes the process deployment from the repository
+	 * @param deploymentId
+	 */
+	public void deleteProcessDeploymentsById(String deploymentId) {
+		if (TUIKUtils.getInstance().isEmpty(deploymentId)) {
+			throw new TUIKProcessEngineException("Process deployment id cannot be empty!");
+		}
+		try {
+			getProcessEngine().getRepositoryService().deleteDeployment(deploymentId, true);
+		} catch (Exception e) {
+			logger.error(e.getMessage());
+			throw new TUIKProcessEngineException(e);
+		}
+	}
+	
+	/**
 	 * Returns process instance specified by key and variables 
 	 * @param processKey
 	 * @param variables
@@ -787,9 +826,12 @@ public class TUIKProcessEngine
 		}
 		try {
 			ProcessInstanceQuery processQuery = getProcessEngine().getRuntimeService().createProcessInstanceQuery();
-			processQuery = processQuery.processDefinitionKey(processKey).includeProcessVariables();
-			for (Entry<String, Object> entry : variables.entrySet()) {
-				processQuery = processQuery.variableValueEquals(entry.getKey(), entry.getValue());
+			processQuery = processQuery.processDefinitionKey(processKey);
+			if (variables != null) {
+				processQuery = processQuery.includeProcessVariables();
+				for (Entry<String, Object> entry : variables.entrySet()) {
+					processQuery = processQuery.variableValueEquals(entry.getKey(), entry.getValue());
+				}
 			}
 			return processQuery.active().list();
 		} catch (Exception e) {
@@ -842,6 +884,8 @@ public class TUIKProcessEngine
 			throw new TUIKProcessEngineException(e);
 		}
 	}	
+	
+	
 
 	/**
 	 * Deletes process instance of a given task
